@@ -1,4 +1,4 @@
-const CACHE = 'fokus-v2';
+const CACHE = 'fokus-v3';
 const FILES = ['./', './index.html', './app.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', e => {
@@ -11,7 +11,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    fetch(e.request).then(res => {
+    fetch(e.request, {cache: 'no-cache'}).then(res => {
       if (res.ok && new URL(e.request.url).origin === location.origin) {
         const copy = res.clone(); caches.open(CACHE).then(c => c.put(e.request, copy));
       }
