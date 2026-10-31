@@ -1,8 +1,8 @@
 {
-  "name": "FOKUS – studie og koncentration",
+  "name": "FOKUS – study and focus",
   "short_name": "FOKUS",
-  "description": "Pomodoro-timer, opgaveliste og studiestatistik med en plante, der vokser, mens du holder fokus.",
-  "lang": "da",
+  "description": "Pomodoro timer, task list and study stats with a plant that grows while you stay focused.",
+  "lang": "en",
   "start_url": "./app.html",
   "scope": "./",
   "display": "standalone",

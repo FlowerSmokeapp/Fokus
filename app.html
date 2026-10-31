@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -257,140 +257,140 @@ button.row{border:0;border-top:1px solid var(--line);background:transparent;text
 <body>
 <div class="app">
   <header class="top">
-    <h1 id="viewTitle">Fokus</h1>
-    <button class="pill" id="planPill" type="button">Gratis</button>
+    <h1 id="viewTitle">Focus</h1>
+    <button class="pill" id="planPill" type="button">Free</button>
   </header>
 
   <div class="install" id="install" role="note">
     <img src="icons/icon-192.png" alt="">
     <p id="installText"></p>
-    <button class="btn small primary" type="button" id="installBtn" hidden>Installér</button>
-    <button class="btn small ghost" type="button" id="installClose" aria-label="Luk">×</button>
+    <button class="btn small primary" type="button" id="installBtn" hidden>Install</button>
+    <button class="btn small ghost" type="button" id="installClose" aria-label="Close">×</button>
   </div>
 
   <!-- FOKUS -->
-  <section class="view on" id="v-fokus" aria-label="Fokus">
-    <button class="goalstrip" type="button" id="goalStrip" aria-label="Dagens mål">
+  <section class="view on" id="v-fokus" aria-label="Focus">
+    <button class="goalstrip" type="button" id="goalStrip" aria-label="Today's goal">
       <svg class="ring" viewBox="0 0 38 38" aria-hidden="true"><circle cx="19" cy="19" r="15" fill="none" stroke="var(--line)" stroke-width="4"/><circle id="goalRing" cx="19" cy="19" r="15" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" transform="rotate(-90 19 19)" stroke-dasharray="94.25" stroke-dashoffset="94.25"/></svg>
-      <div><b id="goalText">0 / 120 min i dag</b><span id="goalSub">Dagens mål</span></div>
-      <div class="cycles" id="cycles" aria-label="Pomodoros i denne runde"></div>
+      <div><b id="goalText">0 / 120 min today</b><span id="goalSub">Today's goal</span></div>
+      <div class="cycles" id="cycles" aria-label="Pomodoros this round"></div>
     </button>
-    <div class="seg" role="group" aria-label="Tilstand">
-      <button type="button" data-mode="focus" aria-pressed="true">Fokus</button>
-      <button type="button" data-mode="short" aria-pressed="false">Pause</button>
-      <button type="button" data-mode="long" aria-pressed="false">Lang pause</button>
+    <div class="seg" role="group" aria-label="Mode">
+      <button type="button" data-mode="focus" aria-pressed="true">Focus</button>
+      <button type="button" data-mode="short" aria-pressed="false">Break</button>
+      <button type="button" data-mode="long" aria-pressed="false">Long break</button>
     </div>
     <div class="stage">
-      <canvas id="plant" width="400" height="400" role="img" aria-label="Plante der vokser mens du holder fokus"></canvas>
+      <canvas id="plant" width="400" height="400" role="img" aria-label="A plant that grows while you stay focused"></canvas>
       <div class="time" id="time">25:00</div>
       <div class="progress"><i id="prog"></i></div>
       <div class="status" id="status"></div>
-      <div class="worktask" id="workTask" hidden><span></span><button type="button" aria-label="Fjern opgave fra timeren">×</button></div>
+      <div class="worktask" id="workTask" hidden><span></span><button type="button" aria-label="Remove task from timer">×</button></div>
       <div class="controls">
-        <button class="btn round" id="resetBtn" type="button" aria-label="Nulstil timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></button>
+        <button class="btn round" id="resetBtn" type="button" aria-label="Reset timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></button>
         <button class="btn primary" id="startBtn" type="button">Start</button>
-        <button class="btn round" id="skipBtn" type="button" aria-label="Spring til næste"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l10 7-10 7zM19 5v14"/></svg></button>
+        <button class="btn round" id="skipBtn" type="button" aria-label="Skip to next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l10 7-10 7zM19 5v14"/></svg></button>
       </div>
       <div class="blockbar" id="blockbar" aria-live="polite"></div>
     </div>
     <div class="quick">
-      <button type="button" id="qSubject"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5"/></svg>Fag<b id="qSubjectV">Matematik</b></button>
-      <button type="button" id="qPlant"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21v-9M12 12c0-4 3-7 7-7 0 4-3 7-7 7zM12 14c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5z"/></svg>Plante<b id="qPlantV">Spire</b></button>
-      <button type="button" id="qSound"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></svg>Lyd<b id="qSoundV">Ingen</b></button>
-      <button type="button" id="qBlock"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M6.5 6.5l11 11"/></svg>Blokering<b id="qBlockV">Fra</b></button>
+      <button type="button" id="qSubject"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5"/></svg>Subject<b id="qSubjectV">Math</b></button>
+      <button type="button" id="qPlant"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21v-9M12 12c0-4 3-7 7-7 0 4-3 7-7 7zM12 14c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5z"/></svg>Plant<b id="qPlantV">Sprout</b></button>
+      <button type="button" id="qSound"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></svg>Sound<b id="qSoundV">None</b></button>
+      <button type="button" id="qBlock"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M6.5 6.5l11 11"/></svg>Blocking<b id="qBlockV">Off</b></button>
     </div>
   </section>
 
   <!-- OPGAVER -->
-  <section class="view" id="v-tasks" aria-label="Opgaver">
+  <section class="view" id="v-tasks" aria-label="Tasks">
     <div class="seg full" role="group" aria-label="Filter" id="taskFilter">
-      <button type="button" data-f="open" aria-pressed="true">Aktive</button>
-      <button type="button" data-f="today" aria-pressed="false">I dag</button>
-      <button type="button" data-f="week" aria-pressed="false">7 dage</button>
-      <button type="button" data-f="done" aria-pressed="false">Færdige</button>
+      <button type="button" data-f="open" aria-pressed="true">Active</button>
+      <button type="button" data-f="today" aria-pressed="false">Today</button>
+      <button type="button" data-f="week" aria-pressed="false">7 days</button>
+      <button type="button" data-f="done" aria-pressed="false">Done</button>
     </div>
     <div id="taskGroups" class="card"></div>
   </section>
 
   <!-- HAVE -->
-  <section class="view" id="v-garden" aria-label="Have">
+  <section class="view" id="v-garden" aria-label="Garden">
     <div class="card">
-      <div class="gardenhead"><b id="gCount">0</b><span class="muted" id="gSub">planter i din have denne uge</span></div>
+      <div class="gardenhead"><b id="gCount">0</b><span class="muted" id="gSub">plants in your garden this week</span></div>
       <div class="garden" id="garden"></div>
     </div>
     <div class="card">
-      <h2>Plantesamling <small id="colSub"></small></h2>
+      <h2>Plant collection <small id="colSub"></small></h2>
       <div class="collection" id="collection"></div>
-      <p class="fine" style="margin:0">Hver fuldført fokusperiode planter én plante. Forlader du appen midt i fokus, visner den lidt.</p>
+      <p class="fine" style="margin:0">Every completed focus session plants one plant. Leave the app mid-session and it wilts a little.</p>
     </div>
   </section>
 
   <!-- STATISTIK -->
-  <section class="view" id="v-stats" aria-label="Statistik">
+  <section class="view" id="v-stats" aria-label="Stats">
     <div class="weeknav">
-      <button type="button" id="wkPrev" aria-label="Forrige uge">‹</button>
-      <b id="wkLabel">Denne uge</b>
-      <button type="button" id="wkNext" aria-label="Næste uge">›</button>
+      <button type="button" id="wkPrev" aria-label="Previous week">‹</button>
+      <b id="wkLabel">This week</b>
+      <button type="button" id="wkNext" aria-label="Next week">›</button>
     </div>
     <div class="kpis">
-      <div class="kpi"><b id="kTotal">0 t</b><span>studietid</span></div>
-      <div class="kpi"><b id="kSessions">0</b><span>fokusperioder</span></div>
-      <div class="kpi"><b id="kStreak">0 dage</b><span>i træk</span></div>
-      <div class="kpi"><b id="kGoalDays">0 / 7</b><span>dage med nået mål</span></div>
+      <div class="kpi"><b id="kTotal">0 h</b><span>study time</span></div>
+      <div class="kpi"><b id="kSessions">0</b><span>focus sessions</span></div>
+      <div class="kpi"><b id="kStreak">0 days</b><span>streak</span></div>
+      <div class="kpi"><b id="kGoalDays">0 / 7</b><span>days goal reached</span></div>
     </div>
     <div id="statsDetail"></div>
     <div class="card">
-      <h2>Seneste fokusperioder</h2>
+      <h2>Recent focus sessions</h2>
       <ul class="history" id="history"></ul>
     </div>
   </section>
 
   <!-- MIG -->
-  <section class="view" id="v-me" aria-label="Mig">
+  <section class="view" id="v-me" aria-label="Me">
     <div class="profile">
       <div class="avatar" id="avatar">S</div>
-      <div><b id="meName">Studerende</b><span class="muted" id="meSub"></span></div>
+      <div><b id="meName">Student</b><span class="muted" id="meSub"></span></div>
     </div>
     <div class="card plancard" id="planCard"></div>
     <div class="card">
-      <h2>Studie</h2>
+      <h2>Study</h2>
       <div class="rows">
-        <div class="row"><div class="lbl"><b>Dagens mål</b><span>Hvor meget vil du studere om dagen?</span></div>
-          <div class="stepper"><button type="button" id="goalMinus" aria-label="Sænk mål">−</button><b id="goalVal">2 t</b><button type="button" id="goalPlus" aria-label="Hæv mål">+</button></div></div>
-        <button class="row" type="button" id="rSubjects"><div class="lbl"><b>Mine fag</b><span id="rSubjectsSub"></span></div><span class="chev">›</span></button>
+        <div class="row"><div class="lbl"><b>Daily goal</b><span>How much do you want to study each day?</span></div>
+          <div class="stepper"><button type="button" id="goalMinus" aria-label="Lower goal">−</button><b id="goalVal">2 h</b><button type="button" id="goalPlus" aria-label="Raise goal">+</button></div></div>
+        <button class="row" type="button" id="rSubjects"><div class="lbl"><b>My subjects</b><span id="rSubjectsSub"></span></div><span class="chev">›</span></button>
         <button class="row" type="button" id="rTimer"><div class="lbl"><b>Timer</b><span id="rTimerSub"></span></div><span class="chev">›</span></button>
-        <div class="row"><div class="lbl"><b>Start pausen automatisk</b><span>Når en fokusperiode er slut</span></div><button class="switch" type="button" role="switch" id="swAuto" aria-label="Start pausen automatisk"></button></div>
+        <div class="row"><div class="lbl"><b>Start breaks automatically</b><span>When a focus session ends</span></div><button class="switch" type="button" role="switch" id="swAuto" aria-label="Start breaks automatically"></button></div>
       </div>
     </div>
     <div class="card">
-      <h2>Fokusværktøjer</h2>
+      <h2>Focus tools</h2>
       <div class="rows">
-        <button class="row" type="button" id="rBlock"><div class="lbl"><b>App-blokering</b><span id="rBlockSub"></span></div><span class="chev">›</span></button>
-        <button class="row" type="button" id="rSound"><div class="lbl"><b>Baggrundslyd</b><span id="rSoundSub"></span></div><span class="chev">›</span></button>
-        <div class="row"><div class="lbl"><b>Demo-tempo</b><span>1 sekund = 1 minut, så du kan se planten vokse</span></div><button class="switch" type="button" role="switch" id="swSpeed" aria-label="Demo-tempo"></button></div>
+        <button class="row" type="button" id="rBlock"><div class="lbl"><b>App blocking</b><span id="rBlockSub"></span></div><span class="chev">›</span></button>
+        <button class="row" type="button" id="rSound"><div class="lbl"><b>Background sound</b><span id="rSoundSub"></span></div><span class="chev">›</span></button>
+        <div class="row"><div class="lbl"><b>Demo speed</b><span>1 second = 1 minute, so you can watch the plant grow</span></div><button class="switch" type="button" role="switch" id="swSpeed" aria-label="Demo speed"></button></div>
       </div>
     </div>
     <div class="card">
       <h2>App</h2>
       <div class="rows">
-        <button class="row" type="button" id="rName"><div class="lbl"><b>Navn</b><span id="rNameSub"></span></div><span class="chev">›</span></button>
-        <button class="row" type="button" id="rTheme"><div class="lbl"><b>Udseende</b><span id="rThemeSub"></span></div><span class="chev">›</span></button>
-        <button class="row" type="button" id="rReset"><div class="lbl"><b style="color:var(--bad)">Slet alle data</b><span>Opgaver, fag, statistik og have</span></div><span class="chev">›</span></button>
+        <button class="row" type="button" id="rName"><div class="lbl"><b>Name</b><span id="rNameSub"></span></div><span class="chev">›</span></button>
+        <button class="row" type="button" id="rTheme"><div class="lbl"><b>Appearance</b><span id="rThemeSub"></span></div><span class="chev">›</span></button>
+        <button class="row" type="button" id="rReset"><div class="lbl"><b style="color:var(--bad)">Delete all data</b><span>Tasks, subjects, stats and garden</span></div><span class="chev">›</span></button>
       </div>
     </div>
-    <p class="fine" style="text-align:center;margin:0">FOKUS prototype · data gemmes kun på denne enhed</p>
+    <p class="fine" style="text-align:center;margin:0">FOKUS prototype · data is only stored on this device</p>
   </section>
 </div>
 
-<button class="fab" id="fab" type="button" aria-label="Ny opgave"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+<button class="fab" id="fab" type="button" aria-label="New task"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
 
-<nav class="nav" aria-label="Hovedmenu">
+<nav class="nav" aria-label="Main menu">
   <div class="in">
-    <button type="button" data-view="fokus" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M10 2h4"/></svg>Fokus<i class="live" id="navLive" hidden></i></button>
-    <button type="button" data-view="tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></svg>Opgaver<i class="badge" id="navBadge" hidden></i></button>
-    <button type="button" data-view="garden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21v-8M12 13c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5zM7 21h10"/></svg>Have</button>
-    <button type="button" data-view="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V4"/></svg>Statistik</button>
-    <button type="button" data-view="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Mig</button>
+    <button type="button" data-view="fokus" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M10 2h4"/></svg>Focus<i class="live" id="navLive" hidden></i></button>
+    <button type="button" data-view="tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></svg>Tasks<i class="badge" id="navBadge" hidden></i></button>
+    <button type="button" data-view="garden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21v-8M12 13c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5zM7 21h10"/></svg>Garden</button>
+    <button type="button" data-view="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V4"/></svg>Stats</button>
+    <button type="button" data-view="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Me</button>
   </div>
 </nav>
 
@@ -404,24 +404,24 @@ button.row{border:0;border-top:1px solid var(--line);background:transparent;text
 (() => {
 const $ = id => document.getElementById(id);
 const COLORS = ['--s1','--s2','--s3','--s4','--s5','--s6'];
-const PLANTS = [{id:'spire',name:'Spire',pro:false},{id:'monstera',name:'Monstera',pro:true},{id:'kaktus',name:'Kaktus',pro:true},{id:'solsikke',name:'Solsikke',pro:true}];
-const SOUNDS = [{id:'off',name:'Ingen',d:'Stilhed',pro:false},{id:'rain',name:'Regn',d:'Blød regn mod ruden',pro:true},{id:'cafe',name:'Café',d:'Summen og kopper der klirrer',pro:true},{id:'white',name:'Hvid støj',d:'Jævn susen, der dækker over larm',pro:true}];
-const PRESETS = [{id:'25',f:25,s:5,l:15,name:'Klassisk 25/5',d:'Lang pause på 15 min efter 4 runder',pro:false},{id:'50',f:50,s:10,l:20,name:'Dybt arbejde 50/10',d:'Lang pause på 20 min',pro:true},{id:'90',f:90,s:20,l:30,name:'Eksamensblok 90/20',d:'Lang pause på 30 min',pro:true}];
-const APPS = ['Instagram','TikTok','YouTube','Snapchat','Netflix','Discord','Spil'];
-const DAYS = ['man','tir','ons','tor','fre','lør','søn'];
-const DAYNAMES = ['søndag','mandag','tirsdag','onsdag','torsdag','fredag','lørdag'];
+const PLANTS = [{id:'spire',name:'Sprout',pro:false},{id:'monstera',name:'Monstera',pro:true},{id:'kaktus',name:'Cactus',pro:true},{id:'solsikke',name:'Sunflower',pro:true}];
+const SOUNDS = [{id:'off',name:'None',d:'Silence',pro:false},{id:'rain',name:'Rain',d:'Soft rain on the window',pro:true},{id:'cafe',name:'Café',d:'Murmur and clinking cups',pro:true},{id:'white',name:'White noise',d:'A steady hiss that masks noise',pro:true}];
+const PRESETS = [{id:'25',f:25,s:5,l:15,name:'Classic 25/5',d:'15 min long break after 4 rounds',pro:false},{id:'50',f:50,s:10,l:20,name:'Deep work 50/10',d:'20 min long break',pro:true},{id:'90',f:90,s:20,l:30,name:'Exam block 90/20',d:'30 min long break',pro:true}];
+const APPS = ['Instagram','TikTok','YouTube','Snapchat','Netflix','Discord','Games'];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const DAYNAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const LOCK = '<svg class="lock" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="5.5" width="8" height="6" rx="1.2" fill="currentColor"/><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>';
-const TITLES = {fokus:'Fokus',tasks:'Opgaver',garden:'Have',stats:'Statistik',me:'Mig'};
+const TITLES = {fokus:'Focus',tasks:'Tasks',garden:'Garden',stats:'Stats',me:'Me'};
 
 const dkey = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const today = () => dkey(new Date());
 const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
 const monday = (off=0) => { const d = new Date(); d.setHours(0,0,0,0); return addDays(d, -((d.getDay()+6)%7) + off*7); };
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fmtHM = m => { m = Math.round(m); const h = Math.floor(m/60), r = m%60; return h ? (r ? `${h} t ${r} m` : `${h} t`) : `${r} m`; };
+const fmtHM = m => { m = Math.round(m); const h = Math.floor(m/60), r = m%60; return h ? (r ? `${h} h ${r} m` : `${h} h`) : `${r} m`; };
 
 function seed(){
-  const subjects=[{id:'mat',name:'Matematik',c:'--s1'},{id:'dan',name:'Dansk',c:'--s2'},{id:'bio',name:'Biologi',c:'--s3'},{id:'eng',name:'Engelsk',c:'--s4'}];
+  const subjects=[{id:'mat',name:'Math',c:'--s1'},{id:'dan',name:'Danish',c:'--s2'},{id:'bio',name:'Biology',c:'--s3'},{id:'eng',name:'English',c:'--s4'}];
   const sessions = [], mon = monday(), t = new Date(); t.setHours(0,0,0,0);
   const plan = [[['mat',3],['eng',1]],[['dan',2],['bio',2]],[['mat',2],['bio',1],['eng',1]],[['dan',3],['mat',1]],[['bio',2],['eng',2]],[['mat',2],['dan',1]],[['dan',1]]];
   // last week too, so the week switcher has something to show
@@ -430,27 +430,27 @@ function seed(){
   for(let i=0;i<7;i++) push(addDays(mon,i-7),prev[i],false);
   for(let i=0;i<7;i++){const d=addDays(mon,i); if(d>t) break; push(d,plan[i],dkey(d)===dkey(t));}
   const tasks = [
-    {id:1, title:'Aflevering: differentialregning', s:'mat', due:dkey(addDays(t,1)), done:false, est:4, pomos:2},
-    {id:2, title:'Læs "Kongens Fald" kap. 3–5', s:'dan', due:dkey(addDays(t,3)), done:false, est:3, pomos:0},
-    {id:3, title:'Rapport om fotosyntese', s:'bio', due:dkey(addDays(t,6)), done:false, est:6, pomos:1},
-    {id:4, title:'Gloser til engelsk test', s:'eng', due:dkey(addDays(t,-1)), done:false, est:1, pomos:0},
-    {id:5, title:'Opgave 4.12–4.18', s:'mat', due:dkey(t), done:true, doneOn:dkey(t), est:2, pomos:2},
-    {id:6, title:'Forbered fremlæggelse om Brexit', s:'eng', due:dkey(addDays(t,10)), done:false, est:3, pomos:0}
+    {id:1, title:'Assignment: differential calculus', s:'mat', due:dkey(addDays(t,1)), done:false, est:4, pomos:2},
+    {id:2, title:'Read "Lord of the Flies" ch. 3–5', s:'dan', due:dkey(addDays(t,3)), done:false, est:3, pomos:0},
+    {id:3, title:'Report on photosynthesis', s:'bio', due:dkey(addDays(t,6)), done:false, est:6, pomos:1},
+    {id:4, title:'Vocabulary for English test', s:'eng', due:dkey(addDays(t,-1)), done:false, est:1, pomos:0},
+    {id:5, title:'Exercises 4.12–4.18', s:'mat', due:dkey(t), done:true, doneOn:dkey(t), est:2, pomos:2},
+    {id:6, title:'Prepare presentation on Brexit', s:'eng', due:dkey(addDays(t,10)), done:false, est:3, pomos:0}
   ];
-  return {v:2, name:'', premium:false, plant:'spire', sound:'off', vol:.5, blocking:true, apps:{Instagram:true,TikTok:true,YouTube:true,Snapchat:true,Netflix:false,Discord:false,Spil:false},
+  return {v:3, name:'', premium:false, plant:'spire', sound:'off', vol:.5, blocking:true, apps:{Instagram:true,TikTok:true,YouTube:true,Snapchat:true,Netflix:false,Discord:false,Games:false},
     goal:120, subject:'mat', preset:'25', auto:true, theme:'system', subjects, sessions, tasks, nextId:7};
 }
 let S;
-try { S = JSON.parse(localStorage.getItem('fokus-v2')); } catch(e){}
-if(!S || S.v!==2) S = seed();
-const save = () => { try { localStorage.setItem('fokus-v2', JSON.stringify(S)); } catch(e){} };
+try { S = JSON.parse(localStorage.getItem('fokus-v3')); } catch(e){}
+if(!S || S.v!==3) S = seed();
+const save = () => { try { localStorage.setItem('fokus-v3', JSON.stringify(S)); } catch(e){} };
 
 const preset = () => { const p = PRESETS.find(p=>p.id===S.preset) || PRESETS[0]; return (p.pro && !S.premium) ? PRESETS[0] : p; };
 const dur = m => 60*(m==='focus'?preset().f : m==='short'?preset().s : preset().l);
 const T = {mode:'focus', running:false, remaining:0, last:0, speed:1, wilt:0, distractions:0, cycle:0, task:null};
 T.remaining = dur('focus');
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-const subj = id => S.subjects.find(s => s.id===id) || S.subjects[0] || {id:'x',name:'Uden fag',c:'--s1'};
+const subj = id => S.subjects.find(s => s.id===id) || S.subjects[0] || {id:'x',name:'No subject',c:'--s1'};
 const plantType = () => S.premium ? S.plant : 'spire';
 
 function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast.h); toast.h=setTimeout(()=>t.classList.remove('show'),3000); }
@@ -581,7 +581,7 @@ function ensureAudio(){
 }
 function playSound(id){
   stopSound(); if(id==='off' || !S.premium) return;
-  try{ ensureAudio(); }catch(e){ toast('Din browser tillader ikke lyd her.'); return; }
+  try{ ensureAudio(); }catch(e){ toast('Your browser doesn\'t allow sound here.'); return; }
   const c=A.ctx;
   if(id==='white'){ loopSrc('white').connect(filt('lowpass',9000)).connect(gain(.12)).connect(A.master); }
   if(id==='rain'){
@@ -632,26 +632,26 @@ function finish(){
   if(T.mode==='focus'){
     logFocus(preset().f, true); T.cycle++;
     const long = T.cycle>=4; if(long) T.cycle=0;
-    toast(long ? 'Fire runder klaret! Tag en lang pause.' : `Godt gået! ${preset().f} min ${subj(S.subject).name} er logget.`);
+    toast(long ? 'Four rounds done! Take a long break.' : `Well done! ${preset().f} min of ${subj(S.subject).name} logged.`);
     setMode(long?'long':'short', S.auto);
-  } else { toast('Pausen er slut. Klar til næste runde?'); setMode('focus'); }
+  } else { toast('Break is over. Ready for the next round?'); setMode('focus'); }
 }
 function renderTimer(){
   const r=Math.max(0,Math.ceil(T.remaining)), total=dur(T.mode);
   const txt=String(Math.floor(r/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0');
   $('time').textContent=txt; document.title = T.running ? txt+' · FOKUS' : 'FOKUS';
   $('prog').style.width = (100*(1-T.remaining/total))+'%';
-  $('startBtn').textContent = T.running ? 'Pause' : (T.remaining<total ? 'Fortsæt' : 'Start');
+  $('startBtn').textContent = T.running ? 'Pause' : (T.remaining<total ? 'Resume' : 'Start');
   const st=$('status');
-  if(T.mode!=='focus') st.textContent = T.running ? 'Pause. Rejs dig, drik vand, kig ud ad vinduet.' : (T.mode==='long'?'Lang pause. Du har fortjent den.':'Kort pause. Planten hviler også.');
-  else if(T.running) st.textContent = `Fokus på ${subj(S.subject).name}` + (T.distractions ? ` · ${T.distractions} distraktion${T.distractions>1?'er':''}` : ' · planten vokser');
-  else if(T.remaining<total) st.textContent='Sat på pause. Planten venter på dig.';
-  else st.textContent='Tryk Start. Planten vokser, mens du holder fokus.';
+  if(T.mode!=='focus') st.textContent = T.running ? 'Break. Stand up, drink some water, look out the window.' : (T.mode==='long'?'Long break. You earned it.':'Short break. The plant is resting too.');
+  else if(T.running) st.textContent = `Focusing on ${subj(S.subject).name}` + (T.distractions ? ` · ${T.distractions} distraction${T.distractions>1?'s':''}` : ' · the plant is growing');
+  else if(T.remaining<total) st.textContent='Paused. The plant is waiting for you.';
+  else st.textContent='Press Start. The plant grows while you stay focused.';
   const wt=$('workTask'), task=S.tasks.find(t=>t.id===T.task);
-  wt.hidden=!task; if(task) wt.querySelector('span').textContent='Arbejder på: '+task.title;
+  wt.hidden=!task; if(task) wt.querySelector('span').textContent='Working on: '+task.title;
   const bb=$('blockbar'), on = T.running && T.mode==='focus' && S.premium && S.blocking;
   bb.classList.toggle('on', on);
-  if(on && !bb.dataset.f){ const list=APPS.filter(a=>S.apps[a]); bb.innerHTML='Blokeret: '+list.map(a=>`<span class="app-x">${a}</span>`).join(''); bb.dataset.f=1; }
+  if(on && !bb.dataset.f){ const list=APPS.filter(a=>S.apps[a]); bb.innerHTML='Blocked: '+list.map(a=>`<span class="app-x">${a}</span>`).join(''); bb.dataset.f=1; }
   if(!on) delete bb.dataset.f;
   $('cycles').innerHTML=[0,1,2,3].map(i=>`<i class="${i<T.cycle?'f':''}"></i>`).join('');
   $('navLive').hidden=!T.running;
@@ -663,7 +663,7 @@ $('startBtn').onclick=()=>{
   syncSound(); renderTimer();
 };
 $('resetBtn').onclick=()=>{
-  if(T.mode==='focus'){ const done=(dur('focus')-T.remaining)/60; if(done>=1){ logFocus(done,false); toast(`${Math.round(done)} min logget på ${subj(S.subject).name}.`);} }
+  if(T.mode==='focus'){ const done=(dur('focus')-T.remaining)/60; if(done>=1){ logFocus(done,false); toast(`${Math.round(done)} min logged for ${subj(S.subject).name}.`);} }
   setMode(T.mode);
 };
 $('skipBtn').onclick=()=>{
@@ -675,22 +675,22 @@ $('workTask').querySelector('button').onclick=()=>{T.task=null; renderTimer();};
 document.addEventListener('visibilitychange',()=>{
   if(T.running && T.mode==='focus'){
     if(document.hidden){ T.distractions++; T.wilt=clamp(T.wilt+.34); }
-    else { toast('Du forlod FOKUS under fokus. Planten visnede lidt.'); renderTimer(); }
+    else { toast('You left FOKUS during focus. Your plant wilted a little.'); renderTimer(); }
   }
 });
 
 /* ---------- Quick settings sheets ---------- */
 const optList = (list, cur, extra='') => list.map(it=>`<button type="button" class="opt" data-id="${it.id}" aria-pressed="${cur===it.id}"><div class="lbl"><b>${esc(it.name)}</b>${it.d?`<span>${esc(it.d)}</span>`:''}</div>${it.pro&&!S.premium?LOCK:''}${extra}</button>`).join('');
 function pickSubject(){
-  openSheet(`<h3 id="sheetTitle">Hvilket fag?</h3><div class="opts">${S.subjects.map(s=>`<button type="button" class="opt" data-id="${s.id}" aria-pressed="${S.subject===s.id}"><span class="dot" style="background:var(${s.c})"></span><div class="lbl"><b>${esc(s.name)}</b><span>${fmtHM(weekMinutes(0).filter(x=>x.s===s.id).reduce((a,x)=>a+x.m,0))} denne uge</span></div></button>`).join('')}</div>
-    <button class="btn ghost" type="button" id="toSubjects">Redigér fag</button>`, el=>{
+  openSheet(`<h3 id="sheetTitle">Which subject?</h3><div class="opts">${S.subjects.map(s=>`<button type="button" class="opt" data-id="${s.id}" aria-pressed="${S.subject===s.id}"><span class="dot" style="background:var(${s.c})"></span><div class="lbl"><b>${esc(s.name)}</b><span>${fmtHM(weekMinutes(0).filter(x=>x.s===s.id).reduce((a,x)=>a+x.m,0))} this week</span></div></button>`).join('')}</div>
+    <button class="btn ghost" type="button" id="toSubjects">Edit subjects</button>`, el=>{
     el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{S.subject=b.dataset.id; save(); closeSheet(); renderAll(false);});
     el.querySelector('#toSubjects').onclick=()=>{closeSheet(); manageSubjects();};
   });
 }
 function pickPlant(){
-  openSheet(`<h3 id="sheetTitle">Vælg plante</h3><div class="collection">${PLANTS.map(p=>`<button type="button" data-id="${p.id}" aria-pressed="${plantType()===p.id}"><span class="cv"></span><span>${p.name}${p.pro&&!S.premium?LOCK:''}</span></button>`).join('')}</div>
-    ${S.premium?'':'<p class="fine">Monstera, kaktus og solsikke kræver Premium.</p>'}`, el=>{
+  openSheet(`<h3 id="sheetTitle">Choose a plant</h3><div class="collection">${PLANTS.map(p=>`<button type="button" data-id="${p.id}" aria-pressed="${plantType()===p.id}"><span class="cv"></span><span>${p.name}${p.pro&&!S.premium?LOCK:''}</span></button>`).join('')}</div>
+    ${S.premium?'':'<p class="fine">Monstera, cactus and sunflower require Premium.</p>'}`, el=>{
     el.querySelectorAll('[data-id]').forEach(b=>{
       const p=PLANTS.find(x=>x.id===b.dataset.id); b.querySelector('.cv').appendChild(miniPlant(p.id,1,0,56));
       b.onclick = () => { if(p.pro && !S.premium){ closeSheet(); openPremium(); return; } S.plant=p.id; save(); closeSheet(); renderAll(false); };
@@ -698,9 +698,9 @@ function pickPlant(){
   });
 }
 function pickSound(){
-  openSheet(`<h3 id="sheetTitle">Baggrundslyd</h3><div class="opts">${optList(SOUNDS,S.premium?S.sound:'off')}</div>
-    <label class="field">Lydstyrke<input type="range" id="vol" min="0" max="1" step="0.05" value="${S.vol}" ${S.premium?'':'disabled'}></label>
-    <p class="fine">Lyden spiller, mens timeren kører i fokus. Tryk på en lyd for at høre den.</p>`, el=>{
+  openSheet(`<h3 id="sheetTitle">Background sound</h3><div class="opts">${optList(SOUNDS,S.premium?S.sound:'off')}</div>
+    <label class="field">Volume<input type="range" id="vol" min="0" max="1" step="0.05" value="${S.vol}" ${S.premium?'':'disabled'}></label>
+    <p class="fine">Sound plays while the focus timer runs. Tap a sound to hear it.</p>`, el=>{
     el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
       const it=SOUNDS.find(s=>s.id===b.dataset.id);
       if(it.pro && !S.premium){ closeSheet(); openPremium(); return; }
@@ -712,10 +712,10 @@ function pickSound(){
 }
 function pickBlock(){
   if(!S.premium){ openPremium(); return; }
-  openSheet(`<h3 id="sheetTitle">App-blokering</h3>
-    <div class="row" style="border:0;padding:0"><div class="lbl"><b>Bloker under fokus</b><span>Gælder kun, mens fokus-timeren kører</span></div><button class="switch" type="button" role="switch" id="bOn" aria-checked="${S.blocking}" aria-label="Bloker under fokus"></button></div>
-    <div class="card" style="padding:4px 14px"><div class="rows">${APPS.map(a=>`<div class="row"><div class="lbl"><b>${a}</b></div><button class="switch" type="button" role="switch" data-app="${a}" aria-checked="${!!S.apps[a]}" aria-label="Bloker ${a}"></button></div>`).join('')}</div></div>
-    <p class="fine">I denne web-prototype er blokeringen en simulering. Den rigtige app bruger telefonens skærmtidsfunktion.</p>`, el=>{
+  openSheet(`<h3 id="sheetTitle">App blocking</h3>
+    <div class="row" style="border:0;padding:0"><div class="lbl"><b>Block during focus</b><span>Only while the focus timer is running</span></div><button class="switch" type="button" role="switch" id="bOn" aria-checked="${S.blocking}" aria-label="Block during focus"></button></div>
+    <div class="card" style="padding:4px 14px"><div class="rows">${APPS.map(a=>`<div class="row"><div class="lbl"><b>${a}</b></div><button class="switch" type="button" role="switch" data-app="${a}" aria-checked="${!!S.apps[a]}" aria-label="Block ${a}"></button></div>`).join('')}</div></div>
+    <p class="fine">In this web prototype, blocking is simulated. The real app uses your phone's Screen Time feature.</p>`, el=>{
     el.querySelector('#bOn').onclick=e=>{S.blocking=!S.blocking; e.currentTarget.setAttribute('aria-checked',S.blocking); save(); renderAll(false);};
     el.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>{const a=b.dataset.app; S.apps[a]=!S.apps[a]; b.setAttribute('aria-checked',S.apps[a]); save(); renderAll(false);});
   });
@@ -726,18 +726,18 @@ $('goalStrip').onclick=()=>go('stats');
 /* ---------- Tasks ---------- */
 let taskFilter='open';
 function dueInfo(due){
-  if(!due) return {txt:'Ingen deadline',cls:'',n:999};
+  if(!due) return {txt:'No deadline',cls:'',n:999};
   const a=new Date(due+'T00:00'), b=new Date(today()+'T00:00'), n=Math.round((a-b)/864e5);
-  if(n<0) return {txt:n===-1?'Overskredet i går':`Overskredet ${-n} dage`,cls:'late',n};
-  if(n===0) return {txt:'I dag',cls:'soon',n};
-  if(n===1) return {txt:'I morgen',cls:'soon',n};
-  if(n<7) return {txt:`Om ${n} dage`,cls:'',n};
-  return {txt:a.toLocaleDateString('da-DK',{day:'numeric',month:'short'}),cls:'',n};
+  if(n<0) return {txt:n===-1?'Overdue since yesterday':`Overdue ${-n} days`,cls:'late',n};
+  if(n===0) return {txt:'Today',cls:'soon',n};
+  if(n===1) return {txt:'Tomorrow',cls:'soon',n};
+  if(n<7) return {txt:`In ${n} days`,cls:'',n};
+  return {txt:a.toLocaleDateString('en-GB',{day:'numeric',month:'short'}),cls:'',n};
 }
 function taskRow(t){
   const d=dueInfo(t.due), s=subj(t.s);
   return `<li class="task${t.done?' done':''}">
-    <input type="checkbox" data-check="${t.id}" ${t.done?'checked':''} aria-label="Marker ${esc(t.title)} som færdig">
+    <input type="checkbox" data-check="${t.id}" ${t.done?'checked':''} aria-label="Mark ${esc(t.title)} as done">
     <button type="button" class="t" data-open="${t.id}"><div class="title">${esc(t.title)}</div><div class="meta"><span class="dot" style="background:var(${s.c})"></span>${esc(s.name)}${t.est?` · ${t.pomos||0}/${t.est} pomodoros`:''}</div></button>
     ${t.done?'':`<span class="due ${d.cls}">${d.txt}</span>`}
   </li>`;
@@ -751,10 +751,10 @@ function renderTasks(){
   if(taskFilter==='done') list=list.filter(t=>t.done);
   list.sort((a,b)=>(a.due||'9')<(b.due||'9')?-1:1);
   const box=$('taskGroups');
-  if(!list.length){ box.innerHTML=`<div class="empty">${taskFilter==='done'?'Ingen færdige opgaver endnu.':'Ingen opgaver her. Tryk + for at tilføje en.'}</div>`; }
+  if(!list.length){ box.innerHTML=`<div class="empty">${taskFilter==='done'?'No completed tasks yet.':'No tasks here. Tap + to add one.'}</div>`; }
   else if(taskFilter==='done'){ box.innerHTML=`<ul class="tasks">${list.map(taskRow).join('')}</ul>`; }
   else {
-    const groups=[['Overskredet',t=>n(t)<0],['I dag',t=>n(t)===0],['Denne uge',t=>n(t)>0&&n(t)<=7],['Senere',t=>n(t)>7]];
+    const groups=[['Overdue',t=>n(t)<0],['Today',t=>n(t)===0],['This week',t=>n(t)>0&&n(t)<=7],['Later',t=>n(t)>7]];
     box.innerHTML=groups.map(([h,f])=>{const g=list.filter(f); return g.length?`<div class="group-h">${h}</div><ul class="tasks">${g.map(taskRow).join('')}</ul>`:'';}).join('');
   }
   const late=S.tasks.filter(t=>!t.done && dueInfo(t.due).n<=0).length;
@@ -763,34 +763,34 @@ function renderTasks(){
 $('taskGroups').addEventListener('change',e=>{
   const t=S.tasks.find(x=>x.id==e.target.dataset.check); if(!t) return;
   t.done=e.target.checked; t.doneOn=t.done?today():null; save();
-  if(t.done) toast('Opgave klaret. Godt gået!');
+  if(t.done) toast('Task done. Nice work!');
   setTimeout(()=>renderAll(false),250);
 });
 $('taskGroups').addEventListener('click',e=>{ const b=e.target.closest('[data-open]'); if(b) editTask(+b.dataset.open); });
 document.querySelectorAll('#taskFilter button').forEach(b=>b.onclick=()=>{taskFilter=b.dataset.f; document.querySelectorAll('#taskFilter button').forEach(x=>x.setAttribute('aria-pressed',x===b)); renderTasks();});
 function editTask(id){
   const t = id ? S.tasks.find(x=>x.id===id) : {title:'',s:S.subject,due:dkey(addDays(new Date(),2)),est:2,pomos:0};
-  openSheet(`<h3 id="sheetTitle">${id?'Opgave':'Ny opgave'}</h3>
+  openSheet(`<h3 id="sheetTitle">${id?'Task':'New task'}</h3>
     <form id="tf" class="opts" autocomplete="off">
-      <label class="field">Titel<input id="tTitle" value="${esc(t.title)}" placeholder="Fx Læs kapitel 4" required ${id?'':'autofocus'}></label>
+      <label class="field">Title<input id="tTitle" value="${esc(t.title)}" placeholder="E.g. Read chapter 4" required ${id?'':'autofocus'}></label>
       <div class="fieldrow">
-        <label class="field">Fag<select id="tSubj">${S.subjects.map(s=>`<option value="${s.id}" ${s.id===t.s?'selected':''}>${esc(s.name)}</option>`).join('')}</select></label>
+        <label class="field">Subject<select id="tSubj">${S.subjects.map(s=>`<option value="${s.id}" ${s.id===t.s?'selected':''}>${esc(s.name)}</option>`).join('')}</select></label>
         <label class="field">Deadline<input id="tDue" type="date" value="${t.due||''}"></label>
       </div>
-      <label class="field">Hvor mange pomodoros tror du, den tager?<select id="tEst">${[1,2,3,4,5,6,8,10].map(n=>`<option ${n===(t.est||2)?'selected':''}>${n}</option>`).join('')}</select></label>
-      ${id?`<p class="fine">${t.pomos||0} pomodoros brugt på opgaven indtil nu.</p>`:''}
-      <button class="btn primary block" type="submit">${id?'Gem':'Tilføj opgave'}</button>
-      ${id&&!t.done?'<button class="btn accent block" type="button" id="tFocus">Start fokus på opgaven</button>':''}
-      ${id?'<button class="btn ghost danger block" type="button" id="tDel">Slet opgave</button>':''}
+      <label class="field">How many pomodoros do you think it will take?<select id="tEst">${[1,2,3,4,5,6,8,10].map(n=>`<option ${n===(t.est||2)?'selected':''}>${n}</option>`).join('')}</select></label>
+      ${id?`<p class="fine">${t.pomos||0} pomodoros spent on this task so far.</p>`:''}
+      <button class="btn primary block" type="submit">${id?'Save':'Add task'}</button>
+      ${id&&!t.done?'<button class="btn accent block" type="button" id="tFocus">Start focusing on this task</button>':''}
+      ${id?'<button class="btn ghost danger block" type="button" id="tDel">Delete task</button>':''}
     </form>`, el=>{
     el.querySelector('#tf').onsubmit=e=>{
       e.preventDefault(); const title=el.querySelector('#tTitle').value.trim(); if(!title) return;
       const v={title, s:el.querySelector('#tSubj').value, due:el.querySelector('#tDue').value||null, est:+el.querySelector('#tEst').value};
       if(id) Object.assign(t,v); else S.tasks.push({id:S.nextId++, done:false, pomos:0, ...v});
-      save(); closeSheet(); renderAll(false); toast(id?'Opgaven er gemt.':'Opgaven er tilføjet.');
+      save(); closeSheet(); renderAll(false); toast(id?'Task saved.':'Task added.');
     };
     const f=el.querySelector('#tFocus'); if(f) f.onclick=()=>{ T.task=t.id; S.subject=t.s; save(); closeSheet(); if(T.mode!=='focus') setMode('focus'); go('fokus'); renderAll(false); };
-    const d=el.querySelector('#tDel'); if(d) d.onclick=()=>{ S.tasks=S.tasks.filter(x=>x.id!==id); if(T.task===id) T.task=null; save(); closeSheet(); renderAll(false); toast('Opgaven er slettet.'); };
+    const d=el.querySelector('#tDel'); if(d) d.onclick=()=>{ S.tasks=S.tasks.filter(x=>x.id!==id); if(T.task===id) T.task=null; save(); closeSheet(); renderAll(false); toast('Task deleted.'); };
   });
 }
 $('fab').onclick=()=>editTask(0);
@@ -800,15 +800,15 @@ function renderGarden(){
   const mon=monday(), keys=[...Array(7)].map((_,i)=>dkey(addDays(mon,i)));
   const wk=S.sessions.filter(s=>keys.includes(s.d)&&s.m>=15).slice().reverse();
   $('gCount').textContent=wk.length;
-  $('gSub').textContent=wk.length===1?'plante i din have denne uge':'planter i din have denne uge';
+  $('gSub').textContent=wk.length===1?'plant in your garden this week':'plants in your garden this week';
   const g=$('garden'); g.innerHTML='';
-  if(!wk.length) g.innerHTML='<div class="empty" style="grid-column:1/-1">Fuldfør en fokusperiode for at plante din første plante.</div>';
+  if(!wk.length) g.innerHTML='<div class="empty" style="grid-column:1/-1">Complete a focus session to plant your first plant.</div>';
   wk.forEach(s=>{
     const el=document.createElement('div'); el.className='pot';
     const d=new Date(s.d+'T00:00'); const sj=subj(s.s);
     el.appendChild(miniPlant(s.p||'spire',1,s.w||0,70));
-    el.insertAdjacentHTML('beforeend',`<span class="sj"><span class="dot" style="background:var(${sj.c})"></span>${esc(sj.name)}</span><span>${s.d===today()?'i dag':DAYNAMES[d.getDay()]} ${s.at||''}</span>`);
-    el.title=`${sj.name}, ${s.m} min`+(s.w?' (visnet lidt)':'');
+    el.insertAdjacentHTML('beforeend',`<span class="sj"><span class="dot" style="background:var(${sj.c})"></span>${esc(sj.name)}</span><span>${s.d===today()?'Today':DAYNAMES[d.getDay()]} ${s.at||''}</span>`);
+    el.title=`${sj.name}, ${s.m} min`+(s.w?' (a little wilted)':'');
     g.appendChild(el);
   });
   const col=$('collection'); col.innerHTML='';
@@ -816,11 +816,11 @@ function renderGarden(){
     const n=S.sessions.filter(s=>(s.p||'spire')===p.id&&s.m>=15).length;
     const b=document.createElement('button'); b.type='button'; b.setAttribute('aria-pressed',plantType()===p.id);
     b.appendChild(miniPlant(p.id,1,0,56));
-    b.insertAdjacentHTML('beforeend',`<span>${p.name}${p.pro&&!S.premium?LOCK:''}</span><span class="muted" style="font-weight:500;font-size:11px">${n} dyrket</span>`);
-    b.onclick=()=>{ if(p.pro&&!S.premium){openPremium();return;} S.plant=p.id; save(); renderAll(false); toast(`${p.name} er valgt til næste fokusperiode.`); };
+    b.insertAdjacentHTML('beforeend',`<span>${p.name}${p.pro&&!S.premium?LOCK:''}</span><span class="muted" style="font-weight:500;font-size:11px">${n} grown</span>`);
+    b.onclick=()=>{ if(p.pro&&!S.premium){openPremium();return;} S.plant=p.id; save(); renderAll(false); toast(`${p.name} selected for your next focus session.`); };
     col.appendChild(b);
   });
-  $('colSub').textContent=S.premium?'Alle planter låst op':'1 af 4 låst op';
+  $('colSub').textContent=S.premium?'All plants unlocked':'1 of 4 unlocked';
 }
 
 /* ---------- Stats ---------- */
@@ -830,47 +830,47 @@ const weekMinutes = off => { const k=weekKeys(off); return S.sessions.filter(s=>
 function renderStats(){
   const keys=weekKeys(weekOff), wk=weekMinutes(weekOff), total=wk.reduce((a,s)=>a+s.m,0), td=today();
   const mon=monday(weekOff);
-  $('wkLabel').textContent = weekOff===0?'Denne uge':weekOff===-1?'Sidste uge':`${mon.toLocaleDateString('da-DK',{day:'numeric',month:'short'})} – ${addDays(mon,6).toLocaleDateString('da-DK',{day:'numeric',month:'short'})}`;
+  $('wkLabel').textContent = weekOff===0?'This week':weekOff===-1?'Last week':`${mon.toLocaleDateString('en-GB',{day:'numeric',month:'short'})} – ${addDays(mon,6).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`;
   $('wkNext').disabled = weekOff>=0;
   $('kTotal').textContent=fmtHM(total);
   $('kSessions').textContent=wk.filter(s=>s.m>=15).length;
   let streak=0; for(let i=0;i<365;i++){const k=dkey(addDays(new Date(),-i)); const m=S.sessions.some(s=>s.d===k); if(m) streak++; else if(i>0) break;}
-  $('kStreak').textContent=streak+(streak===1?' dag':' dage');
+  $('kStreak').textContent=streak+(streak===1?' day':' days');
   const dayTot=keys.map(k=>S.sessions.filter(s=>s.d===k).reduce((a,s)=>a+s.m,0));
   $('kGoalDays').textContent=dayTot.filter(m=>m>=S.goal).length+' / 7';
 
   const per=S.subjects.map(s=>({...s, m:wk.filter(x=>x.s===s.id).reduce((a,x)=>a+x.m,0)})).sort((a,b)=>b.m-a.m);
   const maxS=Math.max(1,...per.map(p=>p.m));
-  const subjHTML=`<div class="card"><h2>Tid pr. fag</h2><div class="subjlist">${per.map(p=>`<div class="subjrow"><span>${esc(p.name)}</span><span class="track"><i style="width:${100*p.m/maxS}%;background:var(${p.c})"></i></span><span class="v">${fmtHM(p.m)}</span></div>`).join('')}</div></div>`;
+  const subjHTML=`<div class="card"><h2>Time per subject</h2><div class="subjlist">${per.map(p=>`<div class="subjrow"><span>${esc(p.name)}</span><span class="track"><i style="width:${100*p.m/maxS}%;background:var(${p.c})"></i></span><span class="v">${fmtHM(p.m)}</span></div>`).join('')}</div></div>`;
   const byDay=keys.map(k=>S.subjects.map(s=>S.sessions.filter(x=>x.d===k&&x.s===s.id).reduce((a,x)=>a+x.m,0)));
   const top=Math.max(60,Math.ceil(Math.max(...dayTot,S.goal)/60)*60), plotH=160-18;
   const goalY=18+plotH*S.goal/top;
-  const daysHTML=`<div class="card"><h2>Pr. dag <small>stiplet linje = dagens mål</small></h2><div class="chartbox">
+  const daysHTML=`<div class="card"><h2>Per day <small>dashed line = daily goal</small></h2><div class="chartbox">
       <div class="gl" style="bottom:${18+plotH}px"></div><div class="gl" style="bottom:${18+plotH/2}px"></div>
       <div class="gl" style="bottom:${goalY}px;border-top:1.5px dashed var(--accent);opacity:.7"></div>
-      <div class="days" role="img" aria-label="Studietid pr. dag">
-        <div class="axis"><span>${top/60} t</span><span>${top/120} t</span><span>0</span></div>
+      <div class="days" role="img" aria-label="Study time per day">
+        <div class="axis"><span>${top/60} h</span><span>${top/120} h</span><span>0</span></div>
         ${keys.map((k,i)=>`<div class="col${k===td?' today':''}" title="${DAYS[i]}: ${fmtHM(dayTot[i])}"><div class="stack" style="height:${plotH*dayTot[i]/top}px">${byDay[i].map((m,j)=>m?`<i style="height:${100*m/(dayTot[i]||1)}%;background:var(${S.subjects[j].c})"></i>`:'').join('')}</div><div class="lbl">${DAYS[i]}</div></div>`).join('')}
       </div></div>
       <div class="legend">${S.subjects.map(s=>`<span><i class="dot" style="background:var(${s.c})"></i>${esc(s.name)}</span>`).join('')}</div></div>`;
   const body=$('statsDetail');
   if(S.premium) body.innerHTML=subjHTML+daysHTML;
-  else { body.innerHTML=`<div class="locked"><div class="inner">${subjHTML}${daysHTML}</div><div class="overlay">Se tid pr. fag og pr. dag med Premium<button class="btn small primary" type="button" id="unlockStats">Lås op</button></div></div>`; $('unlockStats').onclick=openPremium; }
+  else { body.innerHTML=`<div class="locked"><div class="inner">${subjHTML}${daysHTML}</div><div class="overlay">See time per subject and per day with Premium<button class="btn small primary" type="button" id="unlockStats">Unlock</button></div></div>`; $('unlockStats').onclick=openPremium; }
 
   const hist=S.sessions.slice().sort((a,b)=>(a.d+(a.at||''))<(b.d+(b.at||''))?1:-1).slice(0,8);
-  $('history').innerHTML = hist.map(s=>{const sj=subj(s.s), d=new Date(s.d+'T00:00'); return `<li><span class="dot" style="background:var(${sj.c})"></span><b>${esc(sj.name)}</b><span class="muted">${s.m} min</span><span class="when">${s.d===td?'i dag':DAYNAMES[d.getDay()]} ${s.at||''}</span></li>`;}).join('') || '<li class="muted">Ingen endnu.</li>';
+  $('history').innerHTML = hist.map(s=>{const sj=subj(s.s), d=new Date(s.d+'T00:00'); return `<li><span class="dot" style="background:var(${sj.c})"></span><b>${esc(sj.name)}</b><span class="muted">${s.m} min</span><span class="when">${s.d===td?'Today':DAYNAMES[d.getDay()]} ${s.at||''}</span></li>`;}).join('') || '<li class="muted">None yet.</li>';
 }
 $('wkPrev').onclick=()=>{weekOff--; renderStats();};
 $('wkNext').onclick=()=>{if(weekOff<0){weekOff++; renderStats();}};
 
 /* ---------- Me ---------- */
 function manageSubjects(){
-  const draw = () => `<h3 id="sheetTitle">Mine fag</h3>
-    <div class="card" style="padding:4px 14px"><div class="rows">${S.subjects.map(s=>`<div class="row"><span class="dot" style="background:var(${s.c});width:14px;height:14px"></span><div class="lbl"><b>${esc(s.name)}</b></div><button class="btn small ghost danger" type="button" data-del="${s.id}" ${S.subjects.length<2?'disabled':''}>Slet</button></div>`).join('')}</div></div>
+  const draw = () => `<h3 id="sheetTitle">My subjects</h3>
+    <div class="card" style="padding:4px 14px"><div class="rows">${S.subjects.map(s=>`<div class="row"><span class="dot" style="background:var(${s.c});width:14px;height:14px"></span><div class="lbl"><b>${esc(s.name)}</b></div><button class="btn small ghost danger" type="button" data-del="${s.id}" ${S.subjects.length<2?'disabled':''}>Delete</button></div>`).join('')}</div></div>
     <form id="sf" class="opts" autocomplete="off">
-      <label class="field">Nyt fag<input id="sName" placeholder="Fx Historie" maxlength="20" required></label>
-      <div class="swatches" role="group" aria-label="Farve">${COLORS.map((c,i)=>`<button type="button" data-c="${c}" style="background:var(${c})" aria-label="Farve ${i+1}" aria-pressed="${i===S.subjects.length%COLORS.length}"></button>`).join('')}</div>
-      <button class="btn primary block" type="submit">Tilføj fag</button>
+      <label class="field">New subject<input id="sName" placeholder="E.g. History" maxlength="20" required></label>
+      <div class="swatches" role="group" aria-label="Colour">${COLORS.map((c,i)=>`<button type="button" data-c="${c}" style="background:var(${c})" aria-label="Colour ${i+1}" aria-pressed="${i===S.subjects.length%COLORS.length}"></button>`).join('')}</div>
+      <button class="btn primary block" type="submit">Add subject</button>
     </form>`;
   const mount = el => {
     let color = COLORS[S.subjects.length%COLORS.length];
@@ -880,7 +880,7 @@ function manageSubjects(){
       save(); renderAll(false); openSheet(draw(),mount);
     });
     el.querySelector('#sf').onsubmit=e=>{ e.preventDefault(); const n=el.querySelector('#sName').value.trim(); if(!n) return;
-      S.subjects.push({id:'f'+Date.now().toString(36), name:n, c:color}); save(); renderAll(false); openSheet(draw(),mount); toast(`${n} er tilføjet.`); };
+      S.subjects.push({id:'f'+Date.now().toString(36), name:n, c:color}); save(); renderAll(false); openSheet(draw(),mount); toast(`${n} added.`); };
   };
   openSheet(draw(), mount);
 }
@@ -889,26 +889,26 @@ function pickTimer(){
     el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
       const p=PRESETS.find(x=>x.id===b.dataset.id);
       if(p.pro&&!S.premium){closeSheet(); openPremium(); return;}
-      S.preset=p.id; save(); closeSheet(); if(!T.running) setMode(T.mode); renderAll(false); toast(`Timer sat til ${p.f}/${p.s}.`);
+      S.preset=p.id; save(); closeSheet(); if(!T.running) setMode(T.mode); renderAll(false); toast(`Timer set to ${p.f}/${p.s}.`);
     });
   });
 }
 function pickTheme(){
-  const L=[{id:'system',name:'Som telefonen'},{id:'light',name:'Lyst'},{id:'dark',name:'Mørkt'}];
-  openSheet(`<h3 id="sheetTitle">Udseende</h3><div class="opts">${optList(L,S.theme)}</div>`, el=>{
+  const L=[{id:'system',name:'Match phone'},{id:'light',name:'Light'},{id:'dark',name:'Dark'}];
+  openSheet(`<h3 id="sheetTitle">Appearance</h3><div class="opts">${optList(L,S.theme)}</div>`, el=>{
     el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{S.theme=b.dataset.id; save(); applyTheme(); closeSheet(); renderAll(false);});
   });
 }
 function editName(){
-  openSheet(`<h3 id="sheetTitle">Hvad hedder du?</h3><form id="nf" class="opts"><label class="field">Navn<input id="nIn" value="${esc(S.name)}" maxlength="24" autofocus></label><button class="btn primary block" type="submit">Gem</button></form>`, el=>{
+  openSheet(`<h3 id="sheetTitle">What's your name?</h3><form id="nf" class="opts"><label class="field">Name<input id="nIn" value="${esc(S.name)}" maxlength="24" autofocus></label><button class="btn primary block" type="submit">Save</button></form>`, el=>{
     el.querySelector('#nf').onsubmit=e=>{e.preventDefault(); S.name=el.querySelector('#nIn').value.trim(); save(); closeSheet(); renderAll(false);};
   });
 }
 function confirmReset(){
-  openSheet(`<h3 id="sheetTitle">Slet alle data?</h3><p class="muted">Dine opgaver, fag, statistik og have bliver slettet på denne enhed. Det kan ikke fortrydes.</p>
-    <div class="btnrow"><button class="btn" type="button" id="rNo">Annullér</button><button class="btn primary" type="button" id="rYes" style="background:var(--bad);border-color:var(--bad)">Slet alt</button></div>`, el=>{
+  openSheet(`<h3 id="sheetTitle">Delete all data?</h3><p class="muted">Your tasks, subjects, stats and garden will be deleted from this device. This can't be undone.</p>
+    <div class="btnrow"><button class="btn" type="button" id="rNo">Cancel</button><button class="btn primary" type="button" id="rYes" style="background:var(--bad);border-color:var(--bad)">Delete everything</button></div>`, el=>{
     el.querySelector('#rNo').onclick=closeSheet;
-    el.querySelector('#rYes').onclick=()=>{ const p=S.premium; S=seed(); S.sessions=[]; S.tasks=[]; S.premium=p; save(); closeSheet(); setMode('focus'); renderAll(); toast('Alle data er slettet.'); };
+    el.querySelector('#rYes').onclick=()=>{ const p=S.premium; S=seed(); S.sessions=[]; S.tasks=[]; S.premium=p; save(); closeSheet(); setMode('focus'); renderAll(); toast('All data deleted.'); };
   });
 }
 function applyTheme(){ if(S.theme==='system') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme',S.theme); }
@@ -917,42 +917,42 @@ $('rTheme').onclick=pickTheme; $('rName').onclick=editName; $('rReset').onclick=
 $('goalMinus').onclick=()=>{S.goal=Math.max(15,S.goal-15);save();renderAll(false);};
 $('goalPlus').onclick=()=>{S.goal=Math.min(600,S.goal+15);save();renderAll(false);};
 $('swAuto').onclick=()=>{S.auto=!S.auto;save();renderAll(false);};
-$('swSpeed').onclick=()=>{T.speed=T.speed===1?60:1; renderAll(false); toast(T.speed>1?'Demo-tempo: 1 sekund = 1 minut.':'Normalt tempo.');};
+$('swSpeed').onclick=()=>{T.speed=T.speed===1?60:1; renderAll(false); toast(T.speed>1?'Demo speed: 1 second = 1 minute.':'Normal speed.');};
 
 function renderMe(){
-  const nm=S.name||'Studerende';
+  const nm=S.name||'Student';
   $('meName').textContent=nm; $('avatar').textContent=nm.trim()[0].toUpperCase();
   const all=S.sessions.reduce((a,s)=>a+s.m,0);
-  $('meSub').textContent=`${fmtHM(all)} studeret i alt · ${(n=>n+(n===1?' opgave':' opgaver'))(S.tasks.filter(t=>t.done).length)} klaret`;
+  $('meSub').textContent=`${fmtHM(all)} studied in total · ${(n=>n+(n===1?' task':' tasks'))(S.tasks.filter(t=>t.done).length)} done`;
   $('planCard').innerHTML = S.premium
-    ? `<h2>Dit abonnement</h2><p><b>FOKUS Premium</b> er aktiv. Du har app-blokering, detaljeret statistik, alle planter og baggrundslyde.</p><button class="btn small" type="button" id="planBtn">Skift til Gratis</button>`
-    : `<h2>FOKUS Premium</h2><p>Bloker distraherende apps, se detaljeret statistik og få flere planter og lyde. Fra 20,75 kr./md.</p><button class="btn small" type="button" id="planBtn">Se Premium</button>`;
-  $('planBtn').onclick = S.premium ? ()=>{S.premium=false; save(); stopSound(); renderAll(); toast('Skiftet til Gratis.');} : openPremium;
+    ? `<h2>Your subscription</h2><p><b>FOKUS Premium</b> is active. You have app blocking, detailed stats, all plants and background sounds.</p><button class="btn small" type="button" id="planBtn">Switch to Free</button>`
+    : `<h2>FOKUS Premium</h2><p>Block distracting apps, see detailed stats and get more plants and sounds. From DKK 20.75/month.</p><button class="btn small" type="button" id="planBtn">See Premium</button>`;
+  $('planBtn').onclick = S.premium ? ()=>{S.premium=false; save(); stopSound(); renderAll(); toast('Switched to Free.');} : openPremium;
   $('goalVal').textContent=fmtHM(S.goal);
   $('rSubjectsSub').textContent=S.subjects.map(s=>s.name).join(', ');
   $('rTimerSub').textContent=preset().name;
   $('swAuto').setAttribute('aria-checked',S.auto);
   $('swSpeed').setAttribute('aria-checked',T.speed>1);
-  $('rBlockSub').textContent=S.premium?(S.blocking?APPS.filter(a=>S.apps[a]).length+' apps blokeres under fokus':'Slået fra'):'Premium';
+  $('rBlockSub').textContent=S.premium?(S.blocking?APPS.filter(a=>S.apps[a]).length+' apps blocked during focus':'Off'):'Premium';
   $('rSoundSub').textContent=S.premium?SOUNDS.find(s=>s.id===S.sound).name:'Premium';
-  $('rNameSub').textContent=S.name||'Ikke angivet';
-  $('rThemeSub').textContent={system:'Som telefonen',light:'Lyst',dark:'Mørkt'}[S.theme];
+  $('rNameSub').textContent=S.name||'Not set';
+  $('rThemeSub').textContent={system:'Match phone',light:'Light',dark:'Dark'}[S.theme];
 }
 
 /* ---------- Premium ---------- */
 function openPremium(){
   openSheet(`<h3 id="sheetTitle">FOKUS Premium</h3>
-    <ul><li>Bloker distraherende apps i fokusperioden</li><li>Detaljeret statistik pr. fag og pr. dag</li><li>Flere plantetyper: monstera, kaktus og solsikke</li><li>Baggrundslyd: regn, café og hvid støj</li><li>Længere timere: 50/10 og 90/20</li></ul>
+    <ul><li>Block distracting apps during focus</li><li>Detailed stats per subject and per day</li><li>More plants: monstera, cactus and sunflower</li><li>Background sound: rain, café and white noise</li><li>Longer timers: 50/10 and 90/20</li></ul>
     <div class="plans">
-      <button type="button" class="planopt" data-plan="m" aria-pressed="false"><small>Månedlig</small><b>35 kr.</b><small>pr. måned</small></button>
-      <button type="button" class="planopt" data-plan="y" aria-pressed="true"><small>Årlig</small><b>249 kr.</b><small>≈ 20,75 kr./md.</small><span class="save">Spar 171 kr. (41 %)</span></button>
+      <button type="button" class="planopt" data-plan="m" aria-pressed="false"><small>Monthly</small><b>DKK 35</b><small>per month</small></button>
+      <button type="button" class="planopt" data-plan="y" aria-pressed="true"><small>Yearly</small><b>DKK 249</b><small>≈ DKK 20.75/month</small><span class="save">Save DKK 171 (41%)</span></button>
     </div>
-    <button class="btn primary block" type="button" id="buyBtn">Aktivér Premium (demo)</button>
-    <button class="btn ghost block" type="button" id="notNow">Ikke nu</button>
-    <p class="fine">Demo: der trækkes ingen penge. Gratis-versionen beholder timer og opgaveliste.</p>`, el=>{
+    <button class="btn primary block" type="button" id="buyBtn">Activate Premium (demo)</button>
+    <button class="btn ghost block" type="button" id="notNow">Not now</button>
+    <p class="fine">Demo: you won't be charged. The free version keeps the timer and task list.</p>`, el=>{
     el.querySelectorAll('.planopt').forEach(b=>b.onclick=()=>el.querySelectorAll('.planopt').forEach(x=>x.setAttribute('aria-pressed',x===b)));
     el.querySelector('#notNow').onclick=closeSheet;
-    el.querySelector('#buyBtn').onclick=()=>{ const y=el.querySelector('[data-plan="y"]').getAttribute('aria-pressed')==='true'; S.premium=true; save(); closeSheet(); renderAll(); toast(`Premium er aktiv (${y?'249 kr./år':'35 kr./md.'}, demo).`); };
+    el.querySelector('#buyBtn').onclick=()=>{ const y=el.querySelector('[data-plan="y"]').getAttribute('aria-pressed')==='true'; S.premium=true; save(); closeSheet(); renderAll(); toast(`Premium is active (${y?'DKK 249/year':'DKK 35/month'}, demo).`); };
   });
 }
 $('planPill').onclick=()=>S.premium?go('me'):openPremium();
@@ -974,14 +974,14 @@ document.querySelectorAll('.nav [data-view]').forEach(b=>b.onclick=()=>go(b.data
 /* ---------- Render ---------- */
 function renderFokusSide(){
   const mins=S.sessions.filter(s=>s.d===today()).reduce((a,s)=>a+s.m,0);
-  $('goalText').textContent=`${mins} / ${S.goal} min i dag`;
-  $('goalSub').textContent = mins>=S.goal ? 'Dagens mål er nået' : `${S.goal-mins} min til dagens mål`;
+  $('goalText').textContent=`${mins} / ${S.goal} min today`;
+  $('goalSub').textContent = mins>=S.goal ? "Today's goal reached" : `${S.goal-mins} min to go today`;
   $('goalRing').setAttribute('stroke-dashoffset', 94.25*(1-Math.min(1,mins/S.goal)));
   $('qSubjectV').textContent=subj(S.subject).name;
   $('qPlantV').innerHTML=PLANTS.find(p=>p.id===plantType()).name;
-  $('qSoundV').innerHTML=S.premium?SOUNDS.find(s=>s.id===S.sound).name:'Ingen'+LOCK;
-  $('qBlockV').innerHTML=S.premium?(S.blocking?'Til':'Fra'):'Fra'+LOCK;
-  const pill=$('planPill'); pill.textContent=S.premium?'Premium':'Gratis'; pill.classList.toggle('pro',S.premium);
+  $('qSoundV').innerHTML=S.premium?SOUNDS.find(s=>s.id===S.sound).name:'None'+LOCK;
+  $('qBlockV').innerHTML=S.premium?(S.blocking?'On':'Off'):'Off'+LOCK;
+  const pill=$('planPill'); pill.textContent=S.premium?'Premium':'Free'; pill.classList.toggle('pro',S.premium);
 }
 function renderAll(timer=true){
   renderFokusSide(); renderTasks(); renderMe();
@@ -1000,10 +1000,10 @@ function renderAll(timer=true){
   const mobile = ios || /android/i.test(navigator.userAgent);
   const box=$('install'), txt=$('installText'), btn=$('installBtn');
   const SHARE='<svg class="share" viewBox="0 0 14 16" aria-hidden="true"><path d="M7 1v9M3.5 4.5 7 1l3.5 3.5M2 7v8h10V7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
-  if(ios){ txt.innerHTML='<b>Gem FOKUS på hjemmeskærmen</b>Tryk på Del '+SHARE+' i Safari og vælg <b style="display:inline">Føj til hjemmeskærm</b>.'; box.classList.add('on'); }
-  else if(mobile){ txt.innerHTML='<b>Gem FOKUS på hjemmeskærmen</b>Åbn browserens menu ⋮ og vælg <b style="display:inline">Føj til startskærm</b>.'; box.classList.add('on'); }
+  if(ios){ txt.innerHTML='<b>Add FOKUS to your home screen</b>Tap Share '+SHARE+' in Safari and choose <b style="display:inline">Add to Home Screen</b>.'; box.classList.add('on'); }
+  else if(mobile){ txt.innerHTML='<b>Add FOKUS to your home screen</b>Open the browser menu ⋮ and choose <b style="display:inline">Add to Home screen</b>.'; box.classList.add('on'); }
   let deferred=null;
-  window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferred=e; txt.innerHTML='<b>Gem FOKUS på hjemmeskærmen</b>Så åbner den som en rigtig app, også uden internet.'; btn.hidden=false; box.classList.add('on'); });
+  window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferred=e; txt.innerHTML='<b>Add FOKUS to your home screen</b>It opens like a real app, even offline.'; btn.hidden=false; box.classList.add('on'); });
   btn.onclick=async()=>{ if(!deferred) return; deferred.prompt(); await deferred.userChoice; deferred=null; box.classList.remove('on'); };
   $('installClose').onclick=()=>{ box.classList.remove('on'); try{localStorage.setItem('fokus-install-x','1');}catch(e){} };
   window.addEventListener('appinstalled',()=>box.classList.remove('on'));

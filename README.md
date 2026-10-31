@@ -1,11 +1,11 @@
-# FOKUS – studie- og koncentrationsapp
+# FOKUS – study and focus app
 
-Minimalistisk Pomodoro-app (25/5) med en plante, der vokser, mens du holder fokus.
-Opgaveliste med deadlines, dagens mål og ugentlig studietid pr. fag.
+A minimalist Pomodoro app (25/5) with a plant that grows while you stay focused.
+Task list with deadlines, a daily goal, a garden of grown plants and weekly study time per subject.
 
-- `index.html`: på computer vises appen i en telefonramme med QR-kode; på mobil sendes man direkte til appen.
-- `app.html`: selve appen. Kan gemmes på hjemmeskærmen (PWA, virker også offline).
+- `index.html`: on a computer the app is shown inside a phone frame; on a phone it goes straight to the app.
+- `app.html`: the app itself. Can be added to the home screen (PWA, also works offline).
 
-Gratis: timer og simpel opgaveliste.
-Premium (35 kr./md. eller 249 kr./år): app-blokering, detaljeret statistik, flere plantetyper og baggrundslyd.
-Premium er en demo i denne version; der trækkes ingen penge.
+Free: timer and simple task list.
+Premium (DKK 35/month or DKK 249/year): app blocking, detailed stats, more plant types, background sounds and longer timers.
+Premium is a demo in this version; nobody is charged.
