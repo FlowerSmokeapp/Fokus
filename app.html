@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eef1ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131917" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="FOKUS">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<title>FOKUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one calm column. Timer + plant own the centre; tasks, goal and stats sit in a quiet grid underneath. */
+:root{
+  --bg:#eef1ee;
+  --surface:#f8faf8;
+  --ink:#1d2622;
+  --muted:#66736d;
+  --line:#d6ddd8;
+  --accent:#2f7a55;
+  --accent-soft:#dcebe2;
+  --rest:#4a6fa5;
+  --warn:#b7791f;
+  --bad:#b8473b;
+  --pot:#b9a48c;
+  --s1:#2f7a55; --s2:#4a6fa5; --s3:#a8628f; --s4:#c08a2e;
+  --display:"Azeret Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --body:"Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131917; --surface:#1a221f; --ink:#e3ebe6; --muted:#8d9b94; --line:#2b3632;
+    --accent:#5fbf8a; --accent-soft:#1f3a2c; --rest:#7fa3d8; --warn:#e0a84a; --bad:#e07467; --pot:#8a7763;
+    --s1:#5fbf8a; --s2:#7fa3d8; --s3:#d38dbb; --s4:#e0b257;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131917; --surface:#1a221f; --ink:#e3ebe6; --muted:#8d9b94; --line:#2b3632;
+  --accent:#5fbf8a; --accent-soft:#1f3a2c; --rest:#7fa3d8; --warn:#e0a84a; --bad:#e07467; --pot:#8a7763;
+  --s1:#5fbf8a; --s2:#7fa3d8; --s3:#d38dbb; --s4:#e0b257;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));display:flex;flex-direction:column;gap:20px}
+
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-family:var(--display);font-weight:500;letter-spacing:.32em;font-size:15px}
+.plan{display:flex;align-items:center;gap:8px}
+.pill{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.pro{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 14px;font-weight:600}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.ghost{background:transparent}
+.btn.small{padding:5px 10px;font-size:13px;border-radius:8px}
+
+/* Timer stage */
+.stage{display:flex;flex-direction:column;align-items:center;gap:14px;padding:12px 0 8px}
+.modes{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.modes button{border:0;background:transparent;border-radius:999px;padding:6px 16px;font-weight:600;font-size:13px;color:var(--muted)}
+.modes button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+#plant{width:200px;height:200px}
+.time{font-family:var(--display);font-weight:300;font-size:clamp(72px,16vw,128px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.progress{width:min(360px,80%);height:3px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .4s linear}
+body.break .progress i{background:var(--rest)}
+.status{font-size:13px;color:var(--muted);min-height:20px;text-align:center}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.controls .btn.primary{padding:10px 28px;font-size:16px;border-radius:12px}
+.subject-pick{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.subject-pick select{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 8px}
+
+.extras{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:760px}
+.chipgroup{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 8px}
+.chipgroup > span{font-size:12px;color:var(--muted);font-weight:600;padding:0 4px}
+.chip{border:1px solid transparent;background:transparent;border-radius:8px;padding:4px 10px;font-size:13px;font-weight:500;display:inline-flex;gap:6px;align-items:center}
+.chip:hover{border-color:var(--line)}
+.chip[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.lock{width:11px;height:11px;opacity:.6}
+input[type=range]{accent-color:var(--accent);width:80px}
+.switch{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;border:0;background:transparent;padding:4px 6px}
+.switch .track{width:30px;height:18px;border-radius:9px;background:var(--line);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--surface);transition:left .2s}
+.switch[aria-checked="true"] .track{background:var(--accent)}
+.switch[aria-checked="true"] .track::after{left:14px}
+
+.blockbar{display:none;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;font-size:13px;color:var(--muted)}
+.blockbar.on{display:flex}
+.blockbar b{color:var(--ink)}
+.app{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:6px;background:var(--surface);border:1px solid var(--line);text-decoration:line-through;text-decoration-color:var(--bad)}
+
+/* Panels */
+.grid{display:grid;grid-template-columns:1.25fr 1fr 1.15fr;gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr 1fr}.grid .stats{grid-column:1/-1}}
+@media (max-width:620px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h2{margin:0;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:8px;text-wrap:balance}
+.panel h2 small{font-weight:600;letter-spacing:0;text-transform:none;font-size:12px}
+
+.tasks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.task{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.task:first-child{border-top:0}
+.task input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);margin:0}
+.task .t{min-width:0}
+.task .title{font-weight:600;overflow-wrap:anywhere}
+.task.done .title{text-decoration:line-through;color:var(--muted);font-weight:500}
+.task .meta{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.due{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;border:1px solid var(--line);color:var(--muted)}
+.due.soon{color:var(--warn);border-color:currentColor}
+.due.late{color:var(--bad);border-color:currentColor}
+.del{border:0;background:transparent;color:var(--muted);font-size:18px;line-height:1;padding:0 2px;opacity:0;transition:opacity .15s}
+.task:hover .del,.del:focus-visible{opacity:1}
+.addtask{display:grid;grid-template-columns:1fr auto;gap:8px}
+.addtask input,.addtask select{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:7px 9px;min-width:0}
+.addtask .row{display:flex;gap:8px;grid-column:1/-1}
+.addtask .row > *{flex:1}
+
+.goalnum{font-family:var(--body);font-size:34px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.goalnum span{font-size:15px;color:var(--muted)}
+.bar{height:10px;border-radius:5px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:5px}
+.goaledit{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.goaledit b{color:var(--ink);font-variant-numeric:tabular-nums;min-width:60px;text-align:center}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini div{background:var(--bg);border-radius:10px;padding:8px 10px}
+.mini b{display:block;font-weight:700;font-size:20px;font-variant-numeric:tabular-nums}
+.mini span{font-size:12px;color:var(--muted)}
+
+.weektotal{display:flex;align-items:baseline;gap:8px}
+.weektotal b{font-weight:700;font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums}
+.weektotal span{color:var(--muted);font-size:13px}
+.locked{position:relative}
+.locked .inner{filter:blur(5px);opacity:.55;pointer-events:none;user-select:none}
+.locked .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;font-size:13px;font-weight:600}
+.subjrow{display:grid;grid-template-columns:76px 1fr 54px;gap:8px;align-items:center;font-size:13px}
+.subjrow .track{height:12px;background:var(--bg);border-radius:4px;overflow:hidden}
+.subjrow .track i{display:block;height:100%;border-radius:4px}
+.subjrow .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.subjlist{display:flex;flex-direction:column;gap:7px}
+.days{display:grid;grid-template-columns:28px repeat(7,1fr);gap:6px;height:150px;align-items:end;margin-top:4px}
+.days .axis{height:100%;display:flex;flex-direction:column;justify-content:space-between;font-size:10px;color:var(--muted);text-align:right;padding-bottom:18px;font-variant-numeric:tabular-nums}
+.col{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;gap:4px;position:relative}
+.col .stack{display:flex;flex-direction:column-reverse;border-radius:4px 4px 2px 2px;overflow:hidden;background:transparent;min-height:1px}
+.col .stack i{display:block}
+.col .lbl{font-size:11px;color:var(--muted);text-align:center;height:14px}
+.col.today .lbl{color:var(--ink);font-weight:700}
+.chartbox{position:relative}
+.chartbox .gl{position:absolute;left:34px;right:0;border-top:1px dashed var(--line)}
+.legend{margin-top:6px;display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+
+/* Modal + toast */
+.modal{position:fixed;inset:0;background:rgb(0 0 0 / .45);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modal.open{display:flex}
+.sheet{background:var(--surface);border-radius:18px;max-width:440px;width:100%;padding:22px;display:flex;flex-direction:column;gap:14px;border:1px solid var(--line);max-height:100%;overflow:auto}
+.sheet h3{margin:0;font-size:20px;text-wrap:balance}
+.sheet ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.planopt{border:2px solid var(--line);border-radius:12px;padding:12px;text-align:left;background:var(--bg);display:flex;flex-direction:column;gap:2px}
+.planopt[aria-pressed="true"]{border-color:var(--accent)}
+.planopt b{font-family:var(--display);font-weight:500;font-size:22px}
+.planopt small{color:var(--muted);font-size:12px}
+.save{color:var(--accent);font-weight:700;font-size:12px}
+.fine{font-size:12px;color:var(--muted);margin:0}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;max-width:calc(100% - 32px);text-align:center;z-index:20}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:620px){
+  .wrap{gap:16px}
+  #plant{width:160px;height:160px;margin:-20px 0 -6px}
+  .extras{gap:8px}
+  .chipgroup{width:100%;justify-content:center}
+  .controls .btn.primary{flex:1;max-width:220px}
+  .del{opacity:1}
+}
+.install{display:none;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13px}
+.install.on{display:flex}
+.install p{margin:0;flex:1}
+.install b{display:block;font-size:14px}
+.install img{width:40px;height:40px;border-radius:10px}
+.share{display:inline-block;vertical-align:-3px;width:14px;height:16px}
+footer{font-size:12px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">FOKUS</div>
+    <div class="plan">
+      <span class="pill" id="planPill">Gratis</span>
+      <button class="btn small" id="upgradeBtn" type="button">Få Premium</button>
+    </div>
+  </header>
+
+  <div class="install" id="install" role="note">
+    <img src="icons/icon-192.png" alt="">
+    <p id="installText"></p>
+    <button class="btn small primary" type="button" id="installBtn" hidden>Installér</button>
+    <button class="btn small ghost" type="button" id="installClose" aria-label="Luk">×</button>
+  </div>
+
+  <section class="stage" aria-label="Fokustimer">
+    <div class="modes" role="group" aria-label="Tilstand">
+      <button type="button" id="modeFocus" aria-pressed="true">Fokus 25</button>
+      <button type="button" id="modeBreak" aria-pressed="false">Pause 5</button>
+    </div>
+    <canvas id="plant" width="400" height="400" aria-label="Plante der vokser mens du holder fokus" role="img"></canvas>
+    <div class="time" id="time" aria-live="off">25:00</div>
+    <div class="progress"><i id="prog"></i></div>
+    <div class="status" id="status">Vælg et fag og tryk Start. Planten vokser, mens du holder fokus.</div>
+    <div class="controls">
+      <label class="subject-pick" for="subject">Fag
+        <select id="subject"></select>
+      </label>
+      <button class="btn primary" id="startBtn" type="button">Start</button>
+      <button class="btn ghost" id="resetBtn" type="button">Nulstil</button>
+    </div>
+    <div class="blockbar" id="blockbar" aria-live="polite"></div>
+    <div class="extras">
+      <div class="chipgroup" role="group" aria-label="Plantetype" id="plants"><span>Plante</span></div>
+      <div class="chipgroup" role="group" aria-label="Baggrundslyd" id="sounds"><span>Lyd</span></div>
+      <div class="chipgroup">
+        <button class="switch" type="button" role="switch" id="blockSw" aria-checked="true"><span class="track"></span>Bloker apps</button>
+        <button class="switch" type="button" role="switch" id="speedSw" aria-checked="false" title="Kører timeren 60 gange hurtigere, så du kan se planten vokse"><span class="track"></span>Demo-tempo</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="panel">
+      <h2>Opgaver <small id="taskCount"></small></h2>
+      <ul class="tasks" id="tasks"></ul>
+      <form class="addtask" id="addForm" autocomplete="off">
+        <input id="newTitle" placeholder="Ny opgave, fx Læs kapitel 4" aria-label="Opgavens titel" required>
+        <button class="btn small" type="submit">Tilføj</button>
+        <div class="row">
+          <select id="newSubject" aria-label="Fag"></select>
+          <input id="newDue" type="date" aria-label="Deadline">
+        </div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h2>Dagens mål</h2>
+      <div class="goalnum" id="goalNum">0 <span>/ 120 min</span></div>
+      <div class="bar"><i id="goalBar"></i></div>
+      <div class="goaledit">Mål
+        <button class="btn small" type="button" id="goalMinus" aria-label="Sænk mål med 15 minutter">−</button>
+        <b id="goalVal">2 t 0 m</b>
+        <button class="btn small" type="button" id="goalPlus" aria-label="Hæv mål med 15 minutter">+</button>
+      </div>
+      <div class="mini">
+        <div><b id="pomToday">0</b><span>pomodoros i dag</span></div>
+        <div><b id="tasksToday">0</b><span>opgaver klaret</span></div>
+      </div>
+    </div>
+
+    <div class="panel stats">
+      <h2>Ugens studietid <small id="weekRange"></small></h2>
+      <div class="weektotal"><b id="weekTotal">0 t</b><span id="weekSub"></span></div>
+      <div id="statsBody"></div>
+    </div>
+  </section>
+
+  <footer>Data gemmes kun på denne enhed. Ægte app-blokering kræver den installerede app; her vises den som en simulering.</footer>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="sheet">
+    <h3 id="mTitle">FOKUS Premium</h3>
+    <ul>
+      <li>Blokering af distraherende apps i fokusperioden</li>
+      <li>Detaljeret statistik pr. fag og pr. dag</li>
+      <li>Flere plantetyper: monstera, kaktus og solsikke</li>
+      <li>Baggrundslyd: regn, café og hvid støj</li>
+    </ul>
+    <div class="plans">
+      <button type="button" class="planopt" data-plan="m" aria-pressed="false"><small>Månedlig</small><b>35 kr.</b><small>pr. måned</small></button>
+      <button type="button" class="planopt" data-plan="y" aria-pressed="true"><small>Årlig</small><b>249 kr.</b><small>≈ 20,75 kr./md.</small><span class="save">Spar 171 kr. (41 %)</span></button>
+    </div>
+    <button class="btn primary" type="button" id="buyBtn">Aktivér Premium (demo)</button>
+    <button class="btn ghost" type="button" id="closeModal">Ikke nu</button>
+    <p class="fine">Demo: der trækkes ingen penge. Gratis-versionen beholder timer og simpel opgaveliste.</p>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const FOCUS = 25*60, BREAK = 5*60;
+const SUBJECTS = [
+  {id:'mat', name:'Matematik', c:'--s1'},
+  {id:'dan', name:'Dansk', c:'--s2'},
+  {id:'bio', name:'Biologi', c:'--s3'},
+  {id:'eng', name:'Engelsk', c:'--s4'}
+];
+const PLANTS = [{id:'spire',name:'Spire',pro:false},{id:'monstera',name:'Monstera',pro:true},{id:'kaktus',name:'Kaktus',pro:true},{id:'solsikke',name:'Solsikke',pro:true}];
+const SOUNDS = [{id:'off',name:'Ingen',pro:false},{id:'rain',name:'Regn',pro:true},{id:'cafe',name:'Café',pro:true},{id:'white',name:'Hvid støj',pro:true}];
+const BLOCKED = ['Instagram','TikTok','YouTube','Snapchat'];
+const DAYS = ['man','tir','ons','tor','fre','lør','søn'];
+const LOCK = '<svg class="lock" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="5.5" width="8" height="6" rx="1.2" fill="currentColor"/><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>';
+
+const dkey = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today = () => dkey(new Date());
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const monday = () => { const d = new Date(); d.setHours(0,0,0,0); return addDays(d, -((d.getDay()+6)%7)); };
+
+function seed(){
+  const sessions = [], mon = monday(), t = new Date(); t.setHours(0,0,0,0);
+  const plan = [[['mat',3],['eng',1]],[['dan',2],['bio',2]],[['mat',2],['bio',1],['eng',1]],[['dan',3],['mat',1]],[['bio',2],['eng',2]],[['mat',2],['dan',1]],[['dan',1]]];
+  for (let i=0;i<7;i++){
+    const d = addDays(mon,i); if (d > t) break;
+    const isToday = dkey(d) === dkey(t);
+    plan[i].slice(0, isToday ? 1 : 9).forEach(([s,n]) => { for (let k=0;k<n;k++) sessions.push({d:dkey(d), s, m:25}); });
+  }
+  const tasks = [
+    {id:1, title:'Aflevering: differentialregning', s:'mat', due:dkey(addDays(t,1)), done:false},
+    {id:2, title:'Læs "Kongens Fald" kap. 3–5', s:'dan', due:dkey(addDays(t,3)), done:false},
+    {id:3, title:'Rapport om fotosyntese', s:'bio', due:dkey(addDays(t,6)), done:false},
+    {id:4, title:'Gloser til engelsk test', s:'eng', due:dkey(addDays(t,-1)), done:false},
+    {id:5, title:'Opgave 4.12–4.18', s:'mat', due:dkey(t), done:true, doneOn:dkey(t)}
+  ];
+  return {premium:false, plant:'spire', sound:'off', vol:.5, blocking:true, goal:120, subject:'mat', sessions, tasks, nextId:6};
+}
+let S;
+try { S = JSON.parse(localStorage.getItem('fokus-v1')) || seed(); } catch(e){ S = seed(); }
+const save = () => { try { localStorage.setItem('fokus-v1', JSON.stringify(S)); } catch(e){} };
+
+// Timer state (not persisted)
+const T = {mode:'focus', running:false, remaining:FOCUS, last:0, speed:1, wilt:0, distractions:0};
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const subj = id => SUBJECTS.find(s => s.id===id) || SUBJECTS[0];
+const fmtHM = m => { m = Math.round(m); const h = Math.floor(m/60), r = m%60; return h ? (r ? `${h} t ${r} m` : `${h} t`) : `${r} m`; };
+
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast.h); toast.h=setTimeout(()=>t.classList.remove('show'),3200); }
+
+/* ---------- Plant ---------- */
+const cv = $('plant'), ctx = cv.getContext('2d');
+const clamp = (x,a=0,b=1) => Math.max(a,Math.min(b,x));
+const stage = (g,a,b) => clamp((g-a)/(b-a));
+function mix(c1,c2,t){
+  const p = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+  const a=p(c1), b=p(c2); return 'rgb('+a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(',')+')';
+}
+function leaf(x,y,len,ang,col,wid=.42){
+  if (len<=0.5) return;
+  ctx.save(); ctx.translate(x,y); ctx.rotate(ang);
+  ctx.beginPath(); ctx.moveTo(0,0);
+  ctx.quadraticCurveTo(len*.5,-len*wid,len,0); ctx.quadraticCurveTo(len*.5,len*wid,0,0);
+  ctx.fillStyle=col; ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,.12)'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(2,0); ctx.lineTo(len*.85,0); ctx.stroke();
+  ctx.restore();
+}
+function drawPlant(){
+  const g = T.mode==='focus' ? 1 - T.remaining/FOCUS : 1;
+  const W=400, base=318;
+  ctx.clearRect(0,0,W,400);
+  const accent = css('--accent'), wiltCol = '#9a7b4f';
+  const green = mix(accent.length===7?accent:'#2f7a55', wiltCol, T.wilt*.8);
+  const dark = mix('#1f5a3c', '#6b5236', T.wilt*.8);
+  const droop = T.wilt*.5;
+  // soil + pot
+  ctx.fillStyle = css('--pot');
+  ctx.beginPath(); ctx.moveTo(140,base); ctx.lineTo(260,base); ctx.lineTo(246,384); ctx.lineTo(154,384); ctx.closePath(); ctx.fill();
+  ctx.fillRect(132,base-14,136,18);
+  ctx.fillStyle='rgba(0,0,0,.12)'; ctx.fillRect(140,base+4,120,4);
+  const top = base-14;
+  const type = S.premium ? S.plant : 'spire';
+  ctx.lineCap='round';
+  if (type==='kaktus'){
+    const h = 22 + 130*stage(g,0,.6);
+    ctx.fillStyle=green;
+    const body=(x,y,w,hh)=>{ctx.beginPath();ctx.roundRect(x-w/2,y-hh,w,hh,[w/2,w/2,6,6]);ctx.fill();};
+    body(200,top+4,46,h);
+    const a1=stage(g,.4,.75), a2=stage(g,.6,.95);
+    if(a1>0){ctx.fillStyle=green;ctx.fillRect(176-26*a1,top-h*.45,26*a1,16);body(166-26*a1+13,top-h*.45+16,22,16+44*a1);}
+    if(a2>0){ctx.fillRect(224,top-h*.62,24*a2,14);body(236+24*a2-12,top-h*.62+14,20,14+36*a2);}
+    ctx.strokeStyle=dark; ctx.lineWidth=1.4;
+    for(let y=top-10;y>top-h+12;y-=16){ctx.beginPath();ctx.moveTo(190,y);ctx.lineTo(186,y-4);ctx.moveTo(210,y-8);ctx.lineTo(214,y-12);ctx.stroke();}
+    if(g>.95){ctx.fillStyle='#e0567a';for(let i=0;i<5;i++){ctx.beginPath();ctx.ellipse(200+Math.cos(i*1.26)*7,top-h-4+Math.sin(i*1.26)*7,6,4,i*1.26,0,7);ctx.fill();}ctx.fillStyle='#f4c542';ctx.beginPath();ctx.arc(200,top-h-4,4,0,7);ctx.fill();}
+    return;
+  }
+  if (type==='monstera'){
+    const stems=[[-0.55,0,.55],[0.25,.15,.7],[-0.15,.35,.85],[0.6,.55,1]];
+    stems.forEach(([ang,a,b])=>{
+      const s=stage(g,a,b); if(s<=0) return;
+      const L=50+110*s, ex=200+Math.sin(ang)*L, ey=top-Math.cos(ang)*L*.95+droop*30;
+      ctx.strokeStyle=dark; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(200,top); ctx.quadraticCurveTo(200+Math.sin(ang)*L*.3,top-L*.6,ex,ey); ctx.stroke();
+      const r=18+38*s;
+      ctx.save(); ctx.translate(ex,ey); ctx.rotate(ang*.8+droop);
+      ctx.fillStyle=green; ctx.beginPath(); ctx.ellipse(0,-r*.55,r*.9,r*.75,0,0,7); ctx.fill();
+      if(s>.5){ctx.globalCompositeOperation='destination-out';ctx.lineWidth=3;
+        for(let i=-2;i<=2;i++){if(!i)continue;const an=i*.5;ctx.beginPath();ctx.moveTo(Math.sin(an)*r*.5,-r*.55-Math.cos(an)*r*.5*.8);ctx.lineTo(Math.sin(an)*r,-r*.55-Math.cos(an)*r*.8);ctx.stroke();}
+        ctx.globalCompositeOperation='source-over';}
+      ctx.strokeStyle='rgba(0,0,0,.15)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,-r*1.2);ctx.stroke();
+      ctx.restore();
+    });
+    if(g<.02){ctx.fillStyle=green;ctx.beginPath();ctx.ellipse(200,top-6,8,6,0,0,7);ctx.fill();}
+    return;
+  }
+  // spire & solsikke share a stem
+  const tall = type==='solsikke' ? 210 : 150;
+  const h = 14 + tall*stage(g,0,.85);
+  const sway = droop*40;
+  ctx.strokeStyle=dark; ctx.lineWidth = type==='solsikke'?6:4;
+  ctx.beginPath(); ctx.moveTo(200,top); ctx.quadraticCurveTo(204,top-h*.5,200+sway,top-h+sway*.4); ctx.stroke();
+  const pos=t=>({x:200+sway*t*t,y:top-h*t+sway*.4*t*t});
+  const leaves = type==='solsikke' ? [[.25,0,.4],[.45,.15,.55],[.65,.3,.7]] : [[.3,0,.3],[.55,.2,.5],[.78,.4,.75],[.95,.6,.95]];
+  leaves.forEach(([t,a,b],i)=>{
+    const s=stage(g,a,b), p=pos(t), L=(type==='solsikke'?62:48)*s;
+    leaf(p.x,p.y,L,-.45-droop+ (i%2?0:0)+Math.PI*0,green);
+    leaf(p.x,p.y,L*.92,Math.PI+.45+droop,green);
+  });
+  const tp=pos(1);
+  if(type==='solsikke'){
+    const f=stage(g,.7,1);
+    if(f>0){
+      const r=10+22*f;
+      ctx.save();ctx.translate(tp.x,tp.y);ctx.rotate(droop);
+      ctx.fillStyle=mix('#f2b705',wiltCol,T.wilt*.7);
+      for(let i=0;i<14;i++){ctx.save();ctx.rotate(i*Math.PI/7);ctx.beginPath();ctx.ellipse(0,-r,r*.28,r*.62,0,0,7);ctx.fill();ctx.restore();}
+      ctx.fillStyle='#5b3a1e';ctx.beginPath();ctx.arc(0,0,r*.62,0,7);ctx.fill();
+      ctx.restore();
+    } else { ctx.fillStyle=green; ctx.beginPath(); ctx.arc(tp.x,tp.y,5,0,7); ctx.fill(); }
+  } else {
+    leaf(tp.x,tp.y,14+10*g,-Math.PI/2-.35,green,.5); leaf(tp.x,tp.y,12+8*g,-Math.PI/2+.35,green,.5);
+  }
+}
+
+/* ---------- Sound (WebAudio, generated) ---------- */
+const A = {ctx:null, master:null, nodes:[], timers:[]};
+function noiseBuf(kind){
+  const len=A.ctx.sampleRate*3, b=A.ctx.createBuffer(1,len,A.ctx.sampleRate), d=b.getChannelData(0);
+  let last=0; for(let i=0;i<len;i++){const w=Math.random()*2-1; if(kind==='brown'){last=(last+.02*w)/1.02;d[i]=last*3.5;} else d[i]=w;}
+  return b;
+}
+function loopSrc(kind){const s=A.ctx.createBufferSource(); s.buffer=noiseBuf(kind); s.loop=true; s.start(); A.nodes.push(s); return s;}
+function filt(type,f,q=.7){const n=A.ctx.createBiquadFilter(); n.type=type; n.frequency.value=f; n.Q.value=q; A.nodes.push(n); return n;}
+function gain(v){const g=A.ctx.createGain(); g.gain.value=v; A.nodes.push(g); return g;}
+function stopSound(){A.nodes.forEach(n=>{try{n.stop&&n.stop();}catch(e){} try{n.disconnect();}catch(e){}}); A.nodes=[]; A.timers.forEach(clearTimeout); A.timers=[];}
+function playSound(id){
+  stopSound(); if(id==='off' || !S.premium) return;
+  try{
+    if(!A.ctx){A.ctx=new (window.AudioContext||window.webkitAudioContext)(); A.master=A.ctx.createGain(); A.master.connect(A.ctx.destination);}
+    A.ctx.resume(); A.master.gain.value=S.vol;
+  }catch(e){ toast('Din browser tillader ikke lyd her.'); return; }
+  const c=A.ctx;
+  if(id==='white'){ loopSrc('white').connect(filt('lowpass',9000)).connect(gain(.12)).connect(A.master); }
+  if(id==='rain'){
+    loopSrc('white').connect(filt('highpass',500)).connect(filt('lowpass',2400)).connect(gain(.32)).connect(A.master);
+    loopSrc('brown').connect(filt('lowpass',300)).connect(gain(.25)).connect(A.master);
+    const drop=()=>{const s=c.createBufferSource(); s.buffer=noiseBuf('white'); const f=c.createBiquadFilter(); f.type='bandpass'; f.frequency.value=2500+Math.random()*4000; f.Q.value=8; const g=c.createGain(); const t=c.currentTime; g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.25+Math.random()*.25,t+.004); g.gain.exponentialRampToValueAtTime(.0001,t+.05); s.connect(f).connect(g).connect(A.master); s.start(t,Math.random()*2,.06); A.timers.push(setTimeout(drop,30+Math.random()*140));};
+    drop();
+  }
+  if(id==='cafe'){
+    const murmur=gain(.5); loopSrc('brown').connect(filt('bandpass',420,.6)).connect(murmur).connect(A.master);
+    loopSrc('white').connect(filt('bandpass',1200,1.5)).connect(gain(.025)).connect(A.master);
+    const lfo=c.createOscillator(); lfo.frequency.value=.13; const lg=c.createGain(); lg.gain.value=.18; lfo.connect(lg).connect(murmur.gain); lfo.start(); A.nodes.push(lfo,lg);
+    const clink=()=>{const o=c.createOscillator(), g=c.createGain(), t=c.currentTime; o.type='sine'; o.frequency.value=2200+Math.random()*1800; g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.06,t+.005); g.gain.exponentialRampToValueAtTime(.0001,t+.35); o.connect(g).connect(A.master); o.start(t); o.stop(t+.4); A.timers.push(setTimeout(clink,1500+Math.random()*5000));};
+    A.timers.push(setTimeout(clink,1200));
+  }
+}
+const syncSound = () => (T.running ? playSound(S.sound) : stopSound());
+
+/* ---------- Timer ---------- */
+function setMode(m){
+  T.mode=m; T.running=false; T.remaining = m==='focus'?FOCUS:BREAK; T.wilt=0; T.distractions=0;
+  document.body.classList.toggle('break', m==='break');
+  $('modeFocus').setAttribute('aria-pressed', m==='focus'); $('modeBreak').setAttribute('aria-pressed', m==='break');
+  stopSound(); renderTimer();
+}
+function logFocus(minutes){
+  if(minutes<1) return;
+  S.sessions.push({d:today(), s:S.subject, m:Math.round(minutes)}); save(); renderSide();
+}
+function tick(){
+  if(!T.running) return;
+  const now=performance.now(); T.remaining -= (now-T.last)/1000*T.speed; T.last=now;
+  if(T.remaining<=0){
+    T.running=false; T.remaining=0;
+    if(T.mode==='focus'){ logFocus(25); toast(`Godt gået! 25 min ${subj(S.subject).name} er logget. Tid til pause.`); setMode('break'); }
+    else { toast('Pausen er slut. Klar til næste fokusperiode?'); setMode('focus'); }
+    return;
+  }
+  renderTimer(); requestAnimationFrame(tick);
+}
+function renderTimer(){
+  const r=Math.ceil(T.remaining), total = T.mode==='focus'?FOCUS:BREAK;
+  const txt=String(Math.floor(r/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0');
+  $('time').textContent=txt; document.title = T.running ? txt+' · FOKUS' : 'FOKUS';
+  $('prog').style.width = (100*(1-T.remaining/total))+'%';
+  $('startBtn').textContent = T.running ? 'Pause' : (T.remaining<total ? 'Fortsæt' : 'Start');
+  const st=$('status');
+  if(T.mode==='break') st.textContent = T.running ? 'Pause. Rejs dig, drik vand, kig ud ad vinduet.' : 'Pause på 5 minutter. Planten hviler også.';
+  else if(T.running) st.textContent = `Fokus på ${subj(S.subject).name}` + (T.distractions ? ` · ${T.distractions} distraktion${T.distractions>1?'er':''}` : ' · planten vokser');
+  else if(T.remaining<FOCUS) st.textContent='Sat på pause. Planten venter på dig.';
+  else st.textContent='Vælg et fag og tryk Start. Planten vokser, mens du holder fokus.';
+  const bb=$('blockbar'), showBlock = T.running && T.mode==='focus' && S.premium && S.blocking;
+  bb.classList.toggle('on', showBlock);
+  if(showBlock && !bb.dataset.f){ bb.innerHTML='<b>Blokeret indtil pausen:</b> '+BLOCKED.map(a=>`<span class="app">${a}</span>`).join(''); bb.dataset.f=1; }
+  if(!showBlock) delete bb.dataset.f;
+  drawPlant();
+}
+$('startBtn').onclick=()=>{
+  T.running=!T.running;
+  if(T.running){ T.last=performance.now(); requestAnimationFrame(tick); }
+  syncSound(); renderTimer();
+};
+$('resetBtn').onclick=()=>{
+  if(T.mode==='focus'){ const done=(FOCUS-T.remaining)/60; if(done>=1){ logFocus(done); toast(`${Math.round(done)} min logget på ${subj(S.subject).name}.`);} }
+  setMode(T.mode);
+};
+$('modeFocus').onclick=()=>setMode('focus');
+$('modeBreak').onclick=()=>setMode('break');
+document.addEventListener('visibilitychange',()=>{
+  if(T.running && T.mode==='focus'){
+    if(document.hidden){ T.distractions++; T.wilt=clamp(T.wilt+.34); }
+    else { toast('Du forlod FOKUS under fokusperioden. Planten visnede lidt.'); renderTimer(); }
+  }
+});
+
+/* ---------- Controls ---------- */
+function proGate(cb){ return (...a)=>{ if(!S.premium){ openModal(); return; } cb(...a); }; }
+function renderChips(){
+  const mk=(el,list,key,onPick)=>{
+    el.querySelectorAll('button').forEach(b=>b.remove());
+    list.forEach(it=>{
+      const b=document.createElement('button'); b.type='button'; b.className='chip';
+      b.innerHTML=it.name+(it.pro&&!S.premium?LOCK:'');
+      const active = (S.premium||!it.pro) ? S[key]===it.id : false;
+      b.setAttribute('aria-pressed', active || (!S.premium && it.id===list[0].id));
+      if(it.pro && !S.premium) b.title='Kræver Premium';
+      b.onclick = it.pro ? proGate(()=>onPick(it.id)) : ()=>onPick(it.id);
+      el.appendChild(b);
+    });
+  };
+  mk($('plants'),PLANTS,'plant',id=>{S.plant=id;save();renderChips();drawPlant();});
+  mk($('sounds'),SOUNDS,'sound',id=>{S.sound=id;save();renderChips();syncSound();});
+  let vol=$('sounds').querySelector('input');
+  if(S.premium && !vol){ vol=document.createElement('input'); vol.type='range'; vol.id='vol'; vol.min=0; vol.max=1; vol.step=.05; vol.value=S.vol; vol.setAttribute('aria-label','Lydstyrke');
+    vol.oninput=()=>{S.vol=+vol.value; if(A.master) A.master.gain.value=S.vol; save();}; $('sounds').appendChild(vol); }
+  if(!S.premium && vol) vol.remove();
+  const bs=$('blockSw'); bs.setAttribute('aria-checked', S.premium && S.blocking);
+  bs.innerHTML='<span class="track"></span>Bloker apps'+(S.premium?'':LOCK);
+}
+$('blockSw').onclick=proGate(()=>{S.blocking=!S.blocking;save();renderChips();renderTimer();});
+$('speedSw').onclick=()=>{T.speed = T.speed===1?60:1; $('speedSw').setAttribute('aria-checked',T.speed>1); toast(T.speed>1?'Demo-tempo: 1 sekund = 1 minut.':'Normalt tempo.');};
+
+const fillSubj = sel => { sel.innerHTML = SUBJECTS.map(s=>`<option value="${s.id}">${s.name}</option>`).join(''); };
+fillSubj($('subject')); fillSubj($('newSubject'));
+$('subject').value=S.subject;
+$('subject').onchange=e=>{S.subject=e.target.value;save();renderTimer();};
+
+/* ---------- Tasks ---------- */
+function dueInfo(due){
+  if(!due) return {txt:'Ingen deadline',cls:''};
+  const a=new Date(due+'T00:00'), b=new Date(today()+'T00:00'), n=Math.round((a-b)/864e5);
+  if(n<0) return {txt:n===-1?'Overskredet i går':`Overskredet ${-n} dage`,cls:'late'};
+  if(n===0) return {txt:'I dag',cls:'soon'};
+  if(n===1) return {txt:'I morgen',cls:'soon'};
+  if(n<7) return {txt:`Om ${n} dage`,cls:''};
+  return {txt:a.toLocaleDateString('da-DK',{day:'numeric',month:'short'}),cls:''};
+}
+const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function renderTasks(){
+  const list=[...S.tasks].sort((a,b)=>(a.done-b.done)||((a.due||'9')<(b.due||'9')?-1:1));
+  const open=S.tasks.filter(t=>!t.done).length;
+  $('taskCount').textContent = open ? `${open} åbne` : 'Alt klaret';
+  $('tasks').innerHTML = list.map(t=>{
+    const d=dueInfo(t.due), s=subj(t.s);
+    return `<li class="task${t.done?' done':''}">
+      <input type="checkbox" id="tk${t.id}" data-id="${t.id}" ${t.done?'checked':''} aria-label="Marker ${esc(t.title)} som færdig">
+      <label class="t" for="tk${t.id}"><div class="title">${esc(t.title)}</div><div class="meta"><span class="dot" style="background:var(${s.c})"></span>${s.name}</div></label>
+      <div style="display:flex;gap:6px;align-items:center">${t.done?'':`<span class="due ${d.cls}">${d.txt}</span>`}<button class="del" type="button" data-del="${t.id}" aria-label="Slet ${esc(t.title)}">×</button></div>
+    </li>`;}).join('') || '<li class="task"><span></span><span style="color:var(--muted)">Ingen opgaver endnu.</span></li>';
+}
+$('tasks').addEventListener('change',e=>{
+  const t=S.tasks.find(x=>x.id==e.target.dataset.id); if(!t) return;
+  t.done=e.target.checked; t.doneOn = t.done?today():null; save(); renderTasks(); renderSide();
+});
+$('tasks').addEventListener('click',e=>{
+  const id=e.target.dataset.del; if(!id) return;
+  S.tasks=S.tasks.filter(x=>x.id!=id); save(); renderTasks(); renderSide();
+});
+$('newDue').value=dkey(addDays(new Date(),2));
+$('addForm').addEventListener('submit',e=>{
+  e.preventDefault(); const title=$('newTitle').value.trim(); if(!title) return;
+  S.tasks.push({id:S.nextId++, title, s:$('newSubject').value, due:$('newDue').value||null, done:false});
+  $('newTitle').value=''; save(); renderTasks();
+});
+
+/* ---------- Goal + stats ---------- */
+$('goalMinus').onclick=()=>{S.goal=Math.max(15,S.goal-15);save();renderSide();};
+$('goalPlus').onclick=()=>{S.goal=Math.min(600,S.goal+15);save();renderSide();};
+function renderSide(){
+  const td=today(), todays=S.sessions.filter(s=>s.d===td), mins=todays.reduce((a,s)=>a+s.m,0);
+  $('goalNum').innerHTML=`${mins} <span>/ ${S.goal} min</span>`;
+  $('goalBar').style.width=Math.min(100,100*mins/S.goal)+'%';
+  $('goalVal').textContent=fmtHM(S.goal);
+  $('pomToday').textContent=todays.filter(s=>s.m>=25).length;
+  $('tasksToday').textContent=S.tasks.filter(t=>t.done&&t.doneOn===td).length;
+
+  const mon=monday(), keys=[...Array(7)].map((_,i)=>dkey(addDays(mon,i)));
+  const wk=S.sessions.filter(s=>keys.includes(s.d)), total=wk.reduce((a,s)=>a+s.m,0);
+  $('weekRange').textContent = addDays(mon,0).toLocaleDateString('da-DK',{day:'numeric',month:'short'})+' – '+addDays(mon,6).toLocaleDateString('da-DK',{day:'numeric',month:'short'});
+  $('weekTotal').textContent=fmtHM(total);
+  $('weekSub').textContent=`i alt · ${wk.length} sessioner`;
+
+  const per=SUBJECTS.map(s=>({...s, m:wk.filter(x=>x.s===s.id).reduce((a,x)=>a+x.m,0)})).sort((a,b)=>b.m-a.m);
+  const maxS=Math.max(1,...per.map(p=>p.m));
+  const subjHTML=`<div class="subjlist">${per.map(p=>`<div class="subjrow"><span>${p.name}</span><span class="track"><i style="width:${100*p.m/maxS}%;background:var(${p.c})"></i></span><span class="v">${fmtHM(p.m)}</span></div>`).join('')}</div>`;
+
+  const byDay=keys.map(k=>SUBJECTS.map(s=>S.sessions.filter(x=>x.d===k&&x.s===s.id).reduce((a,x)=>a+x.m,0)));
+  const dayTot=byDay.map(d=>d.reduce((a,b)=>a+b,0));
+  const top=Math.max(60,Math.ceil(Math.max(...dayTot)/60)*60);
+  const plotH=150-18-4;
+  const daysHTML=`<div class="chartbox">
+    ${[0,.5,1].map(f=>`<div class="gl" style="bottom:${18+4+plotH*f}px"></div>`).join('')}
+    <div class="days" role="img" aria-label="Studietid pr. dag denne uge">
+      <div class="axis"><span>${top/60} t</span><span>${top/120} t</span><span>0</span></div>
+      ${keys.map((k,i)=>`<div class="col${k===td?' today':''}" title="${DAYS[i]}: ${fmtHM(dayTot[i])}"><div class="stack" style="height:${plotH*dayTot[i]/top}px">${byDay[i].map((m,j)=>m?`<i style="height:${100*m/(dayTot[i]||1)}%;background:var(${SUBJECTS[j].c})"></i>`:'').join('')}</div><div class="lbl">${DAYS[i]}</div></div>`).join('')}
+    </div></div>
+    <div class="legend">${SUBJECTS.map(s=>`<span><i class="dot" style="background:var(${s.c})"></i>${s.name}</span>`).join('')}</div>`;
+
+  const active=dayTot.filter(x=>x>0).length;
+  let streak=0; for(let i=0;i<60;i++){const k=dkey(addDays(new Date(),-i)); const m=S.sessions.filter(s=>s.d===k).reduce((a,s)=>a+s.m,0); if(m>0) streak++; else if(i>0) break;}
+  const best=dayTot.indexOf(Math.max(...dayTot));
+  const miniHTML=`<div class="mini"><div><b>${fmtHM(active?total/active:0)}</b><span>snit pr. studiedag</span></div><div><b>${streak} dage</b><span>i træk</span></div><div><b>${DAYS[best]}</b><span>bedste dag</span></div><div><b>${per[0].name}</b><span>mest tid</span></div></div>`;
+
+  const body=$('statsBody');
+  if(S.premium) body.innerHTML=subjHTML+daysHTML+miniHTML;
+  else body.innerHTML=`<div class="locked"><div class="inner">${subjHTML}${daysHTML}</div><div class="overlay">Se tid pr. fag og pr. dag med Premium<button class="btn small primary" type="button" id="unlockStats">Lås op</button></div></div>`;
+  const u=$('unlockStats'); if(u) u.onclick=openModal;
+}
+
+/* ---------- Premium ---------- */
+function openModal(){ $('modal').classList.add('open'); $('buyBtn').focus(); }
+function closeModal(){ $('modal').classList.remove('open'); }
+$('closeModal').onclick=closeModal;
+$('modal').addEventListener('click',e=>{ if(e.target.id==='modal') closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+document.querySelectorAll('.planopt').forEach(b=>b.onclick=()=>{document.querySelectorAll('.planopt').forEach(x=>x.setAttribute('aria-pressed',x===b));});
+$('buyBtn').onclick=()=>{ const y=document.querySelector('.planopt[data-plan="y"]').getAttribute('aria-pressed')==='true'; S.premium=true; save(); closeModal(); renderAll(); toast(`Premium er aktiv (${y?'249 kr./år':'35 kr./md.'}, demo).`); };
+$('upgradeBtn').onclick=()=>{ if(S.premium){ S.premium=false; save(); stopSound(); renderAll(); syncSound(); toast('Skiftet til Gratis.'); } else openModal(); };
+function renderPlan(){ const p=$('planPill'); p.textContent=S.premium?'Premium':'Gratis'; p.classList.toggle('pro',S.premium); $('upgradeBtn').textContent=S.premium?'Skift til Gratis':'Få Premium'; }
+
+function renderAll(){ renderPlan(); renderChips(); renderTasks(); renderSide(); renderTimer(); }
+renderAll();
+/* ---------- Install to home screen ---------- */
+(function(){
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const framed = window.self !== window.top;
+  let dismissed=false; try{dismissed=localStorage.getItem('fokus-install-x')==='1';}catch(e){}
+  if(standalone || framed || dismissed) return;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+  const mobile = ios || /android/i.test(navigator.userAgent);
+  const box=$('install'), txt=$('installText'), btn=$('installBtn');
+  const SHARE='<svg class="share" viewBox="0 0 14 16" aria-hidden="true"><path d="M7 1v9M3.5 4.5 7 1l3.5 3.5M2 7v8h10V7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+  if(ios){ txt.innerHTML='<b>Gem FOKUS på hjemmeskærmen</b>Tryk på Del '+SHARE+' i Safari og vælg <b style="display:inline">Føj til hjemmeskærm</b>.'; box.classList.add('on'); }
+  else if(mobile){ txt.innerHTML='<b>Gem FOKUS på hjemmeskærmen</b>Åbn browserens menu ⋮ og vælg <b style="display:inline">Føj til startskærm</b>.'; box.classList.add('on'); }
+  let deferred=null;
+  window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferred=e; txt.innerHTML='<b>Gem FOKUS på hjemmeskærmen</b>Så åbner den som en rigtig app, også uden internet.'; btn.hidden=false; box.classList.add('on'); });
+  btn.onclick=async()=>{ if(!deferred) return; deferred.prompt(); await deferred.userChoice; deferred=null; box.classList.remove('on'); };
+  $('installClose').onclick=()=>{ box.classList.remove('on'); try{localStorage.setItem('fokus-install-x','1');}catch(e){} };
+  window.addEventListener('appinstalled',()=>box.classList.remove('on'));
+})();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawPlant);
+new MutationObserver(drawPlant).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+</body>
+</html>
