@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* Desktop showcase: the app runs live inside a phone frame, with a QR code to open it on a real phone. */
+/* Desktop showcase: the app runs live inside a phone frame. */
 :root{
   --bg:#dfe5e1; --ink:#1d2622; --muted:#5d6a64; --accent:#2f7a55; --frame:#151a18; --card:#f8faf8;
   --display:"Azeret Mono", ui-monospace, Menlo, monospace;
@@ -45,11 +45,6 @@ body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);display:fl
 .brand{font-family:var(--display);font-weight:500;letter-spacing:.32em;font-size:15px}
 h1{margin:0;font-size:32px;line-height:1.15;text-wrap:balance}
 .side p{margin:0;color:var(--muted)}
-.qr{display:flex;gap:16px;align-items:center;background:var(--card);border-radius:16px;padding:16px}
-#qrcode{width:120px;height:120px;flex:none}
-#qrcode img,#qrcode canvas{width:120px!important;height:120px!important}
-.qr b{display:block}
-.qr span{font-size:14px;color:var(--muted)}
 ol{margin:0;padding-left:20px;color:var(--muted);font-size:14px;display:flex;flex-direction:column;gap:4px}
 ol b{color:var(--ink)}
 a{color:var(--accent);font-weight:600}
@@ -62,11 +57,7 @@ a{color:var(--accent);font-weight:600}
   <div class="side">
     <div class="brand">FOKUS</div>
     <h1>Studér i fokus. Se din plante vokse.</h1>
-    <p>Pomodoro 25/5, opgaver med deadlines, dagens mål og ugens studietid pr. fag. Prøv appen direkte i telefonen til venstre.</p>
-    <div class="qr">
-      <div id="qrcode" aria-label="QR-kode til appen"></div>
-      <div><b>Åbn på din mobil</b><span>Scan koden med kameraet. Appen åbner i fuld skærm.</span></div>
-    </div>
+    <p>Pomodoro 25/5, opgaver med deadlines, dagens mål og ugens studietid pr. fag. Prototype: prøv appen direkte i telefonen til venstre.</p>
     <ol>
       <li><b>iPhone:</b> Safari → Del → Føj til hjemmeskærm</li>
       <li><b>Android:</b> Chrome → ⋮ → Føj til startskærm</li>
@@ -74,13 +65,11 @@ a{color:var(--accent);font-weight:600}
     <p style="font-size:14px">Link: <a id="link" href="app.html"></a></p>
   </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
   var url = location.href.split('#')[0].split('?')[0].replace(/index\.html$/, '');
   document.getElementById('link').textContent = url.replace(/^https?:\/\//, '');
   document.getElementById('link').href = url;
   var d=new Date();document.getElementById('clock').textContent=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
-  try { new QRCode(document.getElementById('qrcode'), {text: url, width: 240, height: 240, colorDark: '#1d2622', colorLight: '#f8faf8'}); } catch (e) {}
 </script>
 </body>
 </html>
