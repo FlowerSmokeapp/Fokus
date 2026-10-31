@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* Desktop showcase: the app runs live inside a phone frame. */
+/* Desktop prototype view: only the live app inside a phone frame. */
 :root{
   --bg:#dfe5e1; --ink:#1d2622; --muted:#5d6a64; --accent:#2f7a55; --frame:#151a18; --card:#f8faf8;
   --display:"Azeret Mono", ui-monospace, Menlo, monospace;
@@ -34,42 +34,19 @@
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);display:flex;align-items:center;justify-content:center;padding:24px}
-.layout{display:grid;grid-template-columns:auto 340px;gap:72px;align-items:center}
+.layout{display:flex;justify-content:center}
 .phone{width:390px;height:min(844px,calc(100vh - 48px));min-height:600px;background:var(--frame);border-radius:56px;padding:14px;box-shadow:0 40px 80px -30px rgb(0 0 0 / .45),inset 0 0 0 2px #2c3330;position:relative}
 .phone::before{content:"";position:absolute;top:24px;left:50%;transform:translateX(-50%);width:110px;height:30px;background:var(--frame);border-radius:20px;z-index:2}
 .screen{width:100%;height:100%;border-radius:44px;overflow:hidden;background:#eef1ee;display:flex;flex-direction:column}
 .statusbar{height:50px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:6px 34px 0;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:.02em}
 .statusbar span:last-child{font-size:10px;letter-spacing:1px}
 .phone iframe{flex:1;width:100%;border:0;display:block;background:#eef1ee}
-.side{display:flex;flex-direction:column;gap:20px}
-.brand{font-family:var(--display);font-weight:500;letter-spacing:.32em;font-size:15px}
-h1{margin:0;font-size:32px;line-height:1.15;text-wrap:balance}
-.side p{margin:0;color:var(--muted)}
-ol{margin:0;padding-left:20px;color:var(--muted);font-size:14px;display:flex;flex-direction:column;gap:4px}
-ol b{color:var(--ink)}
-a{color:var(--accent);font-weight:600}
-@media (max-width:860px){.layout{grid-template-columns:1fr}.side{display:none}}
 </style>
 </head>
 <body>
 <div class="layout">
   <div class="phone"><div class="screen"><div class="statusbar"><span id="clock">9:41</span><span>●●● ▮</span></div><iframe src="app.html" title="FOKUS-appen"></iframe></div></div>
-  <div class="side">
-    <div class="brand">FOKUS</div>
-    <h1>Studér i fokus. Se din plante vokse.</h1>
-    <p>Pomodoro 25/5, opgaver med deadlines, dagens mål og ugens studietid pr. fag. Prototype: prøv appen direkte i telefonen til venstre.</p>
-    <ol>
-      <li><b>iPhone:</b> Safari → Del → Føj til hjemmeskærm</li>
-      <li><b>Android:</b> Chrome → ⋮ → Føj til startskærm</li>
-    </ol>
-    <p style="font-size:14px">Link: <a id="link" href="app.html"></a></p>
-  </div>
 </div>
-<script>
-  var url = location.href.split('#')[0].split('?')[0].replace(/index\.html$/, '');
-  document.getElementById('link').textContent = url.replace(/^https?:\/\//, '');
-  document.getElementById('link').href = url;
-  var d=new Date();document.getElementById('clock').textContent=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
-</script>
+<script>var d=new Date();document.getElementById('clock').textContent=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');</script>
 </body>
 </html>

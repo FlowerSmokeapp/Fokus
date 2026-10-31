@@ -1,4 +1,4 @@
-const CACHE = 'fokus-v1';
+const CACHE = 'fokus-v2';
 const FILES = ['./', './index.html', './app.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', e => {
